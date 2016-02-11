@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-3">
+      <a href="http://go.mytimelineapp.com/"><img src="http://go.mytimelineapp.com/images/logo.png" class="logo"></a>
+    </div>
+    <div class="col-sm-6 col-sm-offset-3">
+
+          <div class="video_box">
+            <div class="video-info-top">
+              <h2>@<%= @user.name %></h2>
+
+              <img class="profile" src="<%= @user.parse_profile_image %>">
+
+            </div>
+
+
+            <div class="video-info-bottom">
+              <div class="row">
+                <div class="col-sm-6">
+                  <p><div class="addthis_sharing_toolbox"></div></p>
+                </div>
+                <div class="col-sm-6">
+                  <p class="text-right hidden-sm"><a href="https://itunes.apple.com/us/app/timeline-capture-lifes-every/id1027424676?ls=1&mt=8"><img src="http://go.mytimelineapp.com/images/ios.png" width="150"></a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+      <% if request.user_agent =~ /Mobile|webOS/ %>
+          <script type="text/javascript">
+            window.location = "mytimelineapp://user/?user_id=<%= @user.id %>&external=<%= @user.external_id %>&name=<%= @user.name %>";
+          </script>
+      <% end %>
+    </div>
+  </div>
+</div>

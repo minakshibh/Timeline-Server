@@ -43,7 +43,7 @@ Rails.application.configure do
   config.paperclip_defaults = {
       :storage => :s3,
       :s3_credentials => {
-          :bucket => "timeline-development-test",
+          :bucket => "timeline-new-development",
           :access_key_id => "AKIAIKBE6LY7XH4WDEHQ",
           :secret_access_key => "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"
       },

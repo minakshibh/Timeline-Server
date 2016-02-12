@@ -13,4 +13,5 @@
 /tmp
 /.idea/*
 /config/database.yml
+
 /vendor/*

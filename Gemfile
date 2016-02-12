@@ -81,7 +81,4 @@ group :development, :test do
   gem 'gem-licenses'
 end
 
-group :production do
-  # postgres sql
-  gem 'pg'
-end
+

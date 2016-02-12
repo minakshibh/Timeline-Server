@@ -138,7 +138,7 @@ ActiveRecord::Schema.define(version: 20150917094858) do
     t.datetime "video_updated_at"
     t.uuid     "timeline_id",        limit: 16
     t.float    "duration",           limit: 24
-    t.string   "overlay_text",       limit: 250
+    t.string   "overlay_text",       limit: 255
     t.float    "overlay_position",   limit: 24
     t.integer  "overlay_size",       limit: 4
     t.string   "overlay_color",      limit: 255

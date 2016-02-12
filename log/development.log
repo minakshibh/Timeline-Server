@@ -1,0 +1,1232 @@
+  [1m[36m (299.2ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(191) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (491.5ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (294.8ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (32.5ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (459.9ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (63.7ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (432.8ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (39.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (274.3ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (39.5ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (517.7ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (526.3ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (444.0ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (467.9ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (39.3ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (451.1ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (38.6ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (298.3ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (1.0ms)[0m  CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+Mysql2::Error: Specified key was too long; max key length is 767 bytes: CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (293.8ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(191) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (443.2ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (260.7ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (33.3ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (492.7ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (39.0ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (324.2ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (39.3ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (299.6ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (31.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (459.3ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (494.2ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (484.7ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (526.4ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (30.9ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (784.5ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (30.8ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (277.4ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(191) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (508.5ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (278.3ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (32.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (484.2ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (30.6ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (257.8ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (31.0ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (291.2ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (39.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (510.5ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (467.9ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (468.1ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (451.1ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (39.6ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (434.2ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (39.0ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (274.3ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.9ms)[0m  CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+Mysql2::Error: Specified key was too long; max key length is 767 bytes: CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (475.4ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(191) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (475.0ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (286.7ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (33.7ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (469.3ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (39.0ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (257.8ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (39.3ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (265.9ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (39.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (467.5ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (459.7ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (501.4ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (418.9ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (39.0ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (443.0ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (40.7ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (248.2ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.9ms)[0m  CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+Mysql2::Error: Specified key was too long; max key length is 767 bytes: CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (252.2ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(191) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (458.6ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (303.0ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (38.7ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (459.8ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (31.2ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (265.7ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (3.0ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (36.7ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (274.1ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (31.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (443.8ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (442.8ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (459.6ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (426.2ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (30.8ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (434.4ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (40.1ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (255.9ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[36m (304.3ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(191) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (500.6ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (252.1ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (32.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (417.5ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (30.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (248.9ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (39.1ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (265.8ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (39.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (468.9ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (476.3ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (426.2ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (542.9ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (38.9ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (417.9ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (39.0ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (282.6ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.7ms)[0m  CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+Mysql2::Error: Specified key was too long; max key length is 767 bytes: CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (277.4ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(191) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (467.0ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (302.5ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (38.5ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (467.8ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (39.2ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (321.8ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (39.9ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (299.3ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (39.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (501.0ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (476.4ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (417.9ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (443.0ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (39.9ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (526.3ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (39.9ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (306.7ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.9ms)[0m  CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+Mysql2::Error: Specified key was too long; max key length is 767 bytes: CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (280.3ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(191) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (459.5ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (252.9ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (39.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (467.5ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (38.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (308.8ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (2.6ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (28.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (250.1ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (30.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (451.1ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (418.2ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (542.9ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (477.7ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (30.3ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (475.6ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (31.1ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (239.8ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.8ms)[0m  CREATE  INDEX `index_follows_on_follower_id_and_follower_type`  ON `follows` (`follower_id`, `follower_type`) 
+Mysql2::Error: Specified key was too long; max key length is 767 bytes: CREATE  INDEX `index_follows_on_follower_id_and_follower_type`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (283.5ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(191) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (483.4ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (328.8ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (31.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (469.3ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (30.8ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (274.1ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (39.3ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (258.1ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (39.5ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (501.1ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (501.4ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (776.3ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (460.6ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (38.7ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (484.2ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (38.8ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (305.8ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.9ms)[0m  CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+Mysql2::Error: Specified key was too long; max key length is 767 bytes: CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (324.7ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (518.3ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (270.1ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (37.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (467.7ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (31.2ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (274.1ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (31.0ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (274.2ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (31.0ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (450.8ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (485.6ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (417.9ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (417.9ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (31.1ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (459.5ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (39.5ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (239.9ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (275.2ms)[0m  CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (365.9ms)[0m  [1mCREATE  INDEX `fk_followables`  ON `follows` (`followable_id`, `followable_type`) [0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150804111423')[0m
+  [1m[35m (31.0ms)[0m  COMMIT
+Migrating to CreateLikes (20150804111424)
+  [1m[36m (257.7ms)[0m  [1mCREATE TABLE `likes` (`id` int(11) auto_increment PRIMARY KEY, `liker_type` varchar(255), `liker_id` int(11), `likeable_type` varchar(255), `likeable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (257.6ms)[0m  CREATE  INDEX `fk_likes`  ON `likes` (`liker_id`, `liker_type`) 
+  [1m[36m (257.3ms)[0m  [1mCREATE  INDEX `fk_likeables`  ON `likes` (`likeable_id`, `likeable_type`) [0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150804111424')[0m
+  [1m[35m (30.9ms)[0m  COMMIT
+Migrating to CreateMentions (20150804111425)
+  [1m[36m (274.3ms)[0m  [1mCREATE TABLE `mentions` (`id` int(11) auto_increment PRIMARY KEY, `mentioner_type` varchar(255), `mentioner_id` int(11), `mentionable_type` varchar(255), `mentionable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (265.5ms)[0m  CREATE  INDEX `fk_mentions`  ON `mentions` (`mentioner_id`, `mentioner_type`) 
+  [1m[36m (265.8ms)[0m  [1mCREATE  INDEX `fk_mentionables`  ON `mentions` (`mentionable_id`, `mentionable_type`) [0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150804111425')[0m
+  [1m[35m (39.3ms)[0m  COMMIT
+Migrating to ChangeIdTypeInLikes (20150808084712)
+  [1m[36m (708.3ms)[0m  [1mALTER TABLE `likes` CHANGE `liker_id` `liker_id` binary(16) DEFAULT NULL[0m
+  [1m[35m (691.1ms)[0m  ALTER TABLE `likes` CHANGE `likeable_id` `likeable_id` binary(16) DEFAULT NULL
+  [1m[36m (700.2ms)[0m  [1mALTER TABLE `likes` CHANGE `id` `id` binary(16) NOT NULL[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808084712')[0m
+  [1m[35m (39.9ms)[0m  COMMIT
+Migrating to AddLikesCountToTimelines (20150808085319)
+  [1m[36m (500.9ms)[0m  [1mALTER TABLE `timelines` ADD `likers_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808085319')[0m
+  [1m[35m (38.9ms)[0m  COMMIT
+Migrating to AddSettingsToUser (20150808112722)
+  [1m[36m (426.2ms)[0m  [1mALTER TABLE `users` ADD `timelines_public` tinyint(1) DEFAULT 1[0m
+  [1m[35m (467.6ms)[0m  ALTER TABLE `users` ADD `approve_followers` tinyint(1) DEFAULT 0
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150808112722')
+  [1m[36m (31.0ms)[0m  [1mCOMMIT[0m
+Migrating to AddFollowerCountToUser (20150808122512)
+  [1m[35m (434.1ms)[0m  ALTER TABLE `users` ADD `followers_count` int(11) DEFAULT 0
+  [1m[36m (601.0ms)[0m  [1mALTER TABLE `timelines` ADD `followers_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808122512')[0m
+  [1m[35m (39.3ms)[0m  COMMIT
+Migrating to ChangeIdTypeInFollowers (20150808122705)
+  [1m[36m (675.1ms)[0m  [1mALTER TABLE `follows` CHANGE `follower_id` `follower_id` binary(16) DEFAULT NULL[0m
+  [1m[35m (699.6ms)[0m  ALTER TABLE `follows` CHANGE `followable_id` `followable_id` binary(16) DEFAULT NULL
+  [1m[36m (691.1ms)[0m  [1mALTER TABLE `follows` CHANGE `id` `id` binary(16) NOT NULL[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808122705')[0m
+  [1m[35m (39.5ms)[0m  COMMIT
+Migrating to CreateFollowQueues (20150808142156)
+  [1m[36m (291.0ms)[0m  [1mCREATE TABLE `follow_queues` (`id` binary(16) PRIMARY KEY, `follower_type` varchar(255), `follower_id` binary(16), `followable_type` varchar(255), `followable_id` binary(16), `approved` tinyint(1) DEFAULT 0, `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808142156')[0m
+  [1m[35m (39.4ms)[0m  COMMIT
+Migrating to AddAllowedTimelinesToUser (20150813083359)
+  [1m[36m (459.1ms)[0m  [1mALTER TABLE `users` ADD `allowed_timelines_count` int(11) DEFAULT 2[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150813083359')[0m
+  [1m[35m (39.3ms)[0m  COMMIT
+Migrating to CreateActivities (20150813132313)
+  [1m[36m (250.0ms)[0m  [1mCREATE TABLE `activities` (`id` binary(16) PRIMARY KEY, `user` binary(16), `action` varchar(255), `trackable` binary(16), `trackable_type` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150813132313')[0m
+  [1m[35m (31.2ms)[0m  COMMIT
+Migrating to AddIndexToActivities (20150813140948)
+  [1m[36m (550.9ms)[0m  [1mALTER TABLE `activities` DROP `trackable`[0m
+  [1m[35m (451.0ms)[0m  ALTER TABLE `activities` ADD `trackable_id` binary(16)
+  [1m[36m (476.2ms)[0m  [1mALTER TABLE `activities` DROP `user`[0m
+  [1m[35m (642.8ms)[0m  ALTER TABLE `activities` ADD `user_id` binary(16)
+  [1m[36m (392.2ms)[0m  [1mCREATE  INDEX `a_trackables`  ON `activities` (`trackable_id`, `trackable_type`) [0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150813140948')[0m
+  [1m[35m (30.9ms)[0m  COMMIT
+Migrating to AddLikersCountToUsers (20150814085323)
+  [1m[36m (509.3ms)[0m  [1mALTER TABLE `users` ADD `likers_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150814085323')[0m
+  [1m[35m (38.6ms)[0m  COMMIT
+Migrating to AddFolloweesCountToUser (20150814090024)
+  [1m[36m (476.3ms)[0m  [1mALTER TABLE `users` ADD `followees_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150814090024')[0m
+  [1m[35m (39.3ms)[0m  COMMIT
+Migrating to CreateDelayedJobs (20150820112614)
+  [1m[36m (272.7ms)[0m  [1mCREATE TABLE `delayed_jobs` (`id` int(11) auto_increment PRIMARY KEY, `priority` int(11) DEFAULT 0 NOT NULL, `attempts` int(11) DEFAULT 0 NOT NULL, `handler` text NOT NULL, `last_error` text, `run_at` datetime, `locked_at` datetime, `failed_at` datetime, `locked_by` varchar(255), `queue` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (265.8ms)[0m  CREATE  INDEX `delayed_jobs_priority`  ON `delayed_jobs` (`priority`, `run_at`) 
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150820112614')
+  [1m[36m (30.3ms)[0m  [1mCOMMIT[0m
+Migrating to AddDurationToVideo (20150820132005)
+  [1m[35m (417.4ms)[0m  ALTER TABLE `videos` ADD `duration` float
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150820132005')
+  [1m[36m (218.6ms)[0m  [1mCOMMIT[0m
+Migrating to AddIndexesToDelayedJob (20150826130659)
+  [1m[35m (392.3ms)[0m  CREATE  INDEX `delayed_jobs_queue`  ON `delayed_jobs` (`queue`) 
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150826130659')
+  [1m[36m (38.8ms)[0m  [1mCOMMIT[0m
+Migrating to AddIndexesToFollowQueues (20150826130751)
+  [1m[35m (265.4ms)[0m  CREATE  INDEX `fk_follows`  ON `follow_queues` (`follower_id`, `follower_type`) 
+  [1m[36m (349.1ms)[0m  [1mCREATE  INDEX `fk_followables`  ON `follow_queues` (`followable_id`, `followable_type`) [0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150826130751')[0m
+  [1m[35m (38.7ms)[0m  COMMIT
+Migrating to AddIndexesToVideos (20150826130942)
+  [1m[36m (290.6ms)[0m  [1mCREATE  INDEX `video_timelines`  ON `videos` (`timeline_id`) [0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150826130942')[0m
+  [1m[35m (39.8ms)[0m  COMMIT
+Migrating to CreateBlocks (20150902161447)
+  [1m[36m (390.8ms)[0m  [1mCREATE TABLE `blocks` (`id` binary(16) PRIMARY KEY, `user_id` binary(16), `blockable_id` binary(16), `blockable_type` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (357.5ms)[0m  CREATE  INDEX `b_blockables`  ON `blocks` (`blockable_id`, `blockable_type`) 
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150902161447')
+  [1m[36m (30.6ms)[0m  [1mCOMMIT[0m
+Migrating to AddOverlayToVideo (20150903104137)
+  [1m[35m (593.7ms)[0m  ALTER TABLE `videos` ADD `overlay_text` varchar(255)
+  [1m[36m (567.8ms)[0m  [1mALTER TABLE `videos` ADD `overlay_position` float[0m
+  [1m[35m (743.1ms)[0m  ALTER TABLE `videos` ADD `overlay_size` int(11)
+  [1m[36m (592.8ms)[0m  [1mALTER TABLE `videos` ADD `overlay_color` varchar(255)[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150903104137')[0m
+  [1m[35m (31.1ms)[0m  COMMIT
+Migrating to CreateNotifications (20150917094858)
+  [1m[36m (624.4ms)[0m  [1mCREATE TABLE `notifications` (`id` binary(16) PRIMARY KEY, `user_id` binary(16), `notification` varchar(255), `payload` text, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (366.4ms)[0m  CREATE  INDEX `user_notifications`  ON `notifications` (`user_id`) 
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150917094858')
+  [1m[36m (39.9ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.3ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'activities'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `activities`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'blocks'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `blocks`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'delayed_jobs'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `delayed_jobs`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'follow_queues'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `follow_queues`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'follows'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `follows`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'likes'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `likes`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'mentions'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `mentions`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'notifications'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `notifications`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'timelines'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `timelines`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'users'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `users`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'videos'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `videos`
+  [1m[36m (300.0ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (441.6ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (302.2ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (33.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (426.3ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (39.1ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (282.4ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (39.8ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (275.5ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (39.3ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (450.9ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (467.9ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (518.0ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (443.0ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (38.5ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (468.3ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (31.3ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (256.5ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (273.8ms)[0m  CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (259.0ms)[0m  [1mCREATE  INDEX `fk_followables`  ON `follows` (`followable_id`, `followable_type`) [0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150804111423')[0m
+  [1m[35m (38.7ms)[0m  COMMIT
+Migrating to CreateLikes (20150804111424)
+  [1m[36m (299.1ms)[0m  [1mCREATE TABLE `likes` (`id` int(11) auto_increment PRIMARY KEY, `liker_type` varchar(255), `liker_id` int(11), `likeable_type` varchar(255), `likeable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (274.4ms)[0m  CREATE  INDEX `fk_likes`  ON `likes` (`liker_id`, `liker_type`) 
+  [1m[36m (291.2ms)[0m  [1mCREATE  INDEX `fk_likeables`  ON `likes` (`likeable_id`, `likeable_type`) [0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150804111424')[0m
+  [1m[35m (38.8ms)[0m  COMMIT
+Migrating to CreateMentions (20150804111425)
+  [1m[36m (309.0ms)[0m  [1mCREATE TABLE `mentions` (`id` int(11) auto_increment PRIMARY KEY, `mentioner_type` varchar(255), `mentioner_id` int(11), `mentionable_type` varchar(255), `mentionable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (257.5ms)[0m  CREATE  INDEX `fk_mentions`  ON `mentions` (`mentioner_id`, `mentioner_type`) 
+  [1m[36m (315.7ms)[0m  [1mCREATE  INDEX `fk_mentionables`  ON `mentions` (`mentionable_id`, `mentionable_type`) [0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150804111425')[0m
+  [1m[35m (31.3ms)[0m  COMMIT
+Migrating to ChangeIdTypeInLikes (20150808084712)
+  [1m[36m (941.4ms)[0m  [1mALTER TABLE `likes` CHANGE `liker_id` `liker_id` binary(16) DEFAULT NULL[0m
+  [1m[35m (1065.8ms)[0m  ALTER TABLE `likes` CHANGE `likeable_id` `likeable_id` binary(16) DEFAULT NULL
+  [1m[36m (725.8ms)[0m  [1mALTER TABLE `likes` CHANGE `id` `id` binary(16) NOT NULL[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808084712')[0m
+  [1m[35m (31.2ms)[0m  COMMIT
+Migrating to AddLikesCountToTimelines (20150808085319)
+  [1m[36m (509.3ms)[0m  [1mALTER TABLE `timelines` ADD `likers_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808085319')[0m
+  [1m[35m (39.0ms)[0m  COMMIT
+Migrating to AddSettingsToUser (20150808112722)
+  [1m[36m (508.9ms)[0m  [1mALTER TABLE `users` ADD `timelines_public` tinyint(1) DEFAULT 1[0m
+  [1m[35m (559.3ms)[0m  ALTER TABLE `users` ADD `approve_followers` tinyint(1) DEFAULT 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150808112722')
+  [1m[36m (39.2ms)[0m  [1mCOMMIT[0m
+Migrating to AddFollowerCountToUser (20150808122512)
+  [1m[35m (485.3ms)[0m  ALTER TABLE `users` ADD `followers_count` int(11) DEFAULT 0
+  [1m[36m (617.6ms)[0m  [1mALTER TABLE `timelines` ADD `followers_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808122512')[0m
+  [1m[35m (39.1ms)[0m  COMMIT
+Migrating to ChangeIdTypeInFollowers (20150808122705)
+  [1m[36m (1249.8ms)[0m  [1mALTER TABLE `follows` CHANGE `follower_id` `follower_id` binary(16) DEFAULT NULL[0m
+  [1m[35m (1016.4ms)[0m  ALTER TABLE `follows` CHANGE `followable_id` `followable_id` binary(16) DEFAULT NULL
+  [1m[36m (816.8ms)[0m  [1mALTER TABLE `follows` CHANGE `id` `id` binary(16) NOT NULL[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808122705')[0m
+  [1m[35m (31.0ms)[0m  COMMIT
+Migrating to CreateFollowQueues (20150808142156)
+  [1m[36m (282.7ms)[0m  [1mCREATE TABLE `follow_queues` (`id` binary(16) PRIMARY KEY, `follower_type` varchar(255), `follower_id` binary(16), `followable_type` varchar(255), `followable_id` binary(16), `approved` tinyint(1) DEFAULT 0, `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808142156')[0m
+  [1m[35m (31.0ms)[0m  COMMIT
+Migrating to AddAllowedTimelinesToUser (20150813083359)
+  [1m[36m (484.2ms)[0m  [1mALTER TABLE `users` ADD `allowed_timelines_count` int(11) DEFAULT 2[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150813083359')[0m
+  [1m[35m (38.9ms)[0m  COMMIT
+Migrating to CreateActivities (20150813132313)
+  [1m[36m (307.9ms)[0m  [1mCREATE TABLE `activities` (`id` binary(16) PRIMARY KEY, `user` binary(16), `action` varchar(255), `trackable` binary(16), `trackable_type` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150813132313')[0m
+  [1m[35m (39.5ms)[0m  COMMIT
+Migrating to AddIndexToActivities (20150813140948)
+  [1m[36m (542.4ms)[0m  [1mALTER TABLE `activities` DROP `trackable`[0m
+  [1m[35m (502.4ms)[0m  ALTER TABLE `activities` ADD `trackable_id` binary(16)
+  [1m[36m (426.1ms)[0m  [1mALTER TABLE `activities` DROP `user`[0m
+  [1m[35m (534.4ms)[0m  ALTER TABLE `activities` ADD `user_id` binary(16)
+  [1m[36m (407.7ms)[0m  [1mCREATE  INDEX `a_trackables`  ON `activities` (`trackable_id`, `trackable_type`) [0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150813140948')[0m
+  [1m[35m (39.1ms)[0m  COMMIT
+Migrating to AddLikersCountToUsers (20150814085323)
+  [1m[36m (659.4ms)[0m  [1mALTER TABLE `users` ADD `likers_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150814085323')[0m
+  [1m[35m (30.3ms)[0m  COMMIT
+Migrating to AddFolloweesCountToUser (20150814090024)
+  [1m[36m (584.9ms)[0m  [1mALTER TABLE `users` ADD `followees_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150814090024')[0m
+  [1m[35m (38.8ms)[0m  COMMIT
+Migrating to CreateDelayedJobs (20150820112614)
+  [1m[36m (397.1ms)[0m  [1mCREATE TABLE `delayed_jobs` (`id` int(11) auto_increment PRIMARY KEY, `priority` int(11) DEFAULT 0 NOT NULL, `attempts` int(11) DEFAULT 0 NOT NULL, `handler` text NOT NULL, `last_error` text, `run_at` datetime, `locked_at` datetime, `failed_at` datetime, `locked_by` varchar(255), `queue` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (357.9ms)[0m  CREATE  INDEX `delayed_jobs_priority`  ON `delayed_jobs` (`priority`, `run_at`) 
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150820112614')
+  [1m[36m (38.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddDurationToVideo (20150820132005)
+  [1m[35m (517.8ms)[0m  ALTER TABLE `videos` ADD `duration` float
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150820132005')
+  [1m[36m (39.1ms)[0m  [1mCOMMIT[0m
+Migrating to AddIndexesToDelayedJob (20150826130659)
+  [1m[35m (370.1ms)[0m  CREATE  INDEX `delayed_jobs_queue`  ON `delayed_jobs` (`queue`) 
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150826130659')
+  [1m[36m (38.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddIndexesToFollowQueues (20150826130751)
+  [1m[35m (298.8ms)[0m  CREATE  INDEX `fk_follows`  ON `follow_queues` (`follower_id`, `follower_type`) 
+  [1m[36m (307.6ms)[0m  [1mCREATE  INDEX `fk_followables`  ON `follow_queues` (`followable_id`, `followable_type`) [0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150826130751')[0m
+  [1m[35m (31.2ms)[0m  COMMIT
+Migrating to AddIndexesToVideos (20150826130942)
+  [1m[36m (567.2ms)[0m  [1mCREATE  INDEX `video_timelines`  ON `videos` (`timeline_id`) [0m
+  [1m[35m (0.3ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150826130942')[0m
+  [1m[35m (38.8ms)[0m  COMMIT
+Migrating to CreateBlocks (20150902161447)
+  [1m[36m (390.9ms)[0m  [1mCREATE TABLE `blocks` (`id` binary(16) PRIMARY KEY, `user_id` binary(16), `blockable_id` binary(16), `blockable_type` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (382.6ms)[0m  CREATE  INDEX `b_blockables`  ON `blocks` (`blockable_id`, `blockable_type`) 
+  [1m[36m (0.3ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150902161447')
+  [1m[36m (38.6ms)[0m  [1mCOMMIT[0m
+Migrating to AddOverlayToVideo (20150903104137)
+  [1m[35m (667.7ms)[0m  ALTER TABLE `videos` ADD `overlay_text` varchar(255)
+  [1m[36m (592.9ms)[0m  [1mALTER TABLE `videos` ADD `overlay_position` float[0m
+  [1m[35m (735.6ms)[0m  ALTER TABLE `videos` ADD `overlay_size` int(11)
+  [1m[36m (542.8ms)[0m  [1mALTER TABLE `videos` ADD `overlay_color` varchar(255)[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150903104137')[0m
+  [1m[35m (88.8ms)[0m  COMMIT
+Migrating to CreateNotifications (20150917094858)
+  [1m[36m (340.4ms)[0m  [1mCREATE TABLE `notifications` (`id` binary(16) PRIMARY KEY, `user_id` binary(16), `notification` varchar(255), `payload` text, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (390.9ms)[0m  CREATE  INDEX `user_notifications`  ON `notifications` (`user_id`) 
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150917094858')
+  [1m[36m (39.4ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'activities'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `activities`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'blocks'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `blocks`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'delayed_jobs'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `delayed_jobs`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'follow_queues'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `follow_queues`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'follows'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `follows`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'likes'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `likes`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'mentions'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `mentions`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'notifications'
+[0m
+  [1m[35m (0.7ms)[0m  SHOW CREATE TABLE `notifications`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'timelines'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `timelines`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'users'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `users`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'videos'
+[0m
+  [1m[35m (0.2ms)[0m  SHOW CREATE TABLE `videos`
+
+
+Started GET "/" for 127.0.0.1 at 2016-02-11 17:41:29 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.8ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+
+
+Started GET "/" for 127.0.0.1 at 2016-02-12 09:55:03 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (13.7ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+  [1m[36m (304.0ms)[0m  [1mCREATE TABLE `schema_migrations` (`version` varchar(255) NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (400.7ms)[0m  CREATE UNIQUE INDEX `unique_schema_migrations`  ON `schema_migrations` (`version`) 
+  [1m[36mActiveRecord::SchemaMigration Load (0.3ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Migrating to CreateUsers (20150721075501)
+  [1m[35m (242.0ms)[0m  CREATE TABLE `users` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `email` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150721075501')
+  [1m[36m (40.6ms)[0m  [1mCOMMIT[0m
+Migrating to AddExternalObjectIdToUser (20150725132342)
+  [1m[35m (409.6ms)[0m  ALTER TABLE `users` ADD `external_id` varchar(255)
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150725132342')
+  [1m[36m (38.4ms)[0m  [1mCOMMIT[0m
+Migrating to CreateTimelines (20150728094456)
+  [1m[35m (249.1ms)[0m  CREATE TABLE `timelines` (`id` binary(16) PRIMARY KEY, `name` varchar(255), `user_id` binary(16), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150728094456')
+  [1m[36m (39.5ms)[0m  [1mCOMMIT[0m
+Migrating to CreateVideos (20150729113232)
+  [1m[35m (241.3ms)[0m  CREATE TABLE `videos` (`id` binary(16) PRIMARY KEY, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150729113232')
+  [1m[36m (39.6ms)[0m  [1mCOMMIT[0m
+Migrating to AddVideoColumnsToVideo (20150729125957)
+  [1m[35m (518.4ms)[0m  ALTER TABLE `videos` ADD `video_file_name` varchar(255)
+  [1m[36m (393.1ms)[0m  [1mALTER TABLE `videos` ADD `video_content_type` varchar(255)[0m
+  [1m[35m (401.3ms)[0m  ALTER TABLE `videos` ADD `video_file_size` int(11)
+  [1m[36m (434.5ms)[0m  [1mALTER TABLE `videos` ADD `video_updated_at` datetime[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150729125957')[0m
+  [1m[35m (39.1ms)[0m  COMMIT
+Migrating to AddTimelineIdToVideo (20150730065126)
+  [1m[36m (460.2ms)[0m  [1mALTER TABLE `videos` ADD `timeline_id` binary(16)[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150730065126')[0m
+  [1m[35m (38.8ms)[0m  COMMIT
+Migrating to CreateFollows (20150804111423)
+  [1m[36m (259.5ms)[0m  [1mCREATE TABLE `follows` (`id` int(11) auto_increment PRIMARY KEY, `follower_type` varchar(255), `follower_id` int(11), `followable_type` varchar(255), `followable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (223.8ms)[0m  CREATE  INDEX `fk_follows`  ON `follows` (`follower_id`, `follower_type`) 
+  [1m[36m (224.2ms)[0m  [1mCREATE  INDEX `fk_followables`  ON `follows` (`followable_id`, `followable_type`) [0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150804111423')[0m
+  [1m[35m (30.7ms)[0m  COMMIT
+Migrating to CreateLikes (20150804111424)
+  [1m[36m (240.3ms)[0m  [1mCREATE TABLE `likes` (`id` int(11) auto_increment PRIMARY KEY, `liker_type` varchar(255), `liker_id` int(11), `likeable_type` varchar(255), `likeable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (231.6ms)[0m  CREATE  INDEX `fk_likes`  ON `likes` (`liker_id`, `liker_type`) 
+  [1m[36m (232.6ms)[0m  [1mCREATE  INDEX `fk_likeables`  ON `likes` (`likeable_id`, `likeable_type`) [0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150804111424')[0m
+  [1m[35m (39.0ms)[0m  COMMIT
+Migrating to CreateMentions (20150804111425)
+  [1m[36m (274.2ms)[0m  [1mCREATE TABLE `mentions` (`id` int(11) auto_increment PRIMARY KEY, `mentioner_type` varchar(255), `mentioner_id` int(11), `mentionable_type` varchar(255), `mentionable_id` int(11), `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (282.3ms)[0m  CREATE  INDEX `fk_mentions`  ON `mentions` (`mentioner_id`, `mentioner_type`) 
+  [1m[36m (242.0ms)[0m  [1mCREATE  INDEX `fk_mentionables`  ON `mentions` (`mentionable_id`, `mentionable_type`) [0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150804111425')[0m
+  [1m[35m (30.6ms)[0m  COMMIT
+Migrating to ChangeIdTypeInLikes (20150808084712)
+  [1m[36m (624.5ms)[0m  [1mALTER TABLE `likes` CHANGE `liker_id` `liker_id` binary(16) DEFAULT NULL[0m
+  [1m[35m (599.4ms)[0m  ALTER TABLE `likes` CHANGE `likeable_id` `likeable_id` binary(16) DEFAULT NULL
+  [1m[36m (732.9ms)[0m  [1mALTER TABLE `likes` CHANGE `id` `id` binary(16) NOT NULL[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808084712')[0m
+  [1m[35m (39.4ms)[0m  COMMIT
+Migrating to AddLikesCountToTimelines (20150808085319)
+  [1m[36m (401.8ms)[0m  [1mALTER TABLE `timelines` ADD `likers_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808085319')[0m
+  [1m[35m (31.0ms)[0m  COMMIT
+Migrating to AddSettingsToUser (20150808112722)
+  [1m[36m (450.4ms)[0m  [1mALTER TABLE `users` ADD `timelines_public` tinyint(1) DEFAULT 1[0m
+  [1m[35m (401.0ms)[0m  ALTER TABLE `users` ADD `approve_followers` tinyint(1) DEFAULT 0
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150808112722')
+  [1m[36m (39.0ms)[0m  [1mCOMMIT[0m
+Migrating to AddFollowerCountToUser (20150808122512)
+  [1m[35m (459.0ms)[0m  ALTER TABLE `users` ADD `followers_count` int(11) DEFAULT 0
+  [1m[36m (410.4ms)[0m  [1mALTER TABLE `timelines` ADD `followers_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808122512')[0m
+  [1m[35m (30.8ms)[0m  COMMIT
+Migrating to ChangeIdTypeInFollowers (20150808122705)
+  [1m[36m (740.9ms)[0m  [1mALTER TABLE `follows` CHANGE `follower_id` `follower_id` binary(16) DEFAULT NULL[0m
+  [1m[35m (640.9ms)[0m  ALTER TABLE `follows` CHANGE `followable_id` `followable_id` binary(16) DEFAULT NULL
+  [1m[36m (749.5ms)[0m  [1mALTER TABLE `follows` CHANGE `id` `id` binary(16) NOT NULL[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808122705')[0m
+  [1m[35m (30.8ms)[0m  COMMIT
+Migrating to CreateFollowQueues (20150808142156)
+  [1m[36m (248.7ms)[0m  [1mCREATE TABLE `follow_queues` (`id` binary(16) PRIMARY KEY, `follower_type` varchar(255), `follower_id` binary(16), `followable_type` varchar(255), `followable_id` binary(16), `approved` tinyint(1) DEFAULT 0, `created_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150808142156')[0m
+  [1m[35m (31.1ms)[0m  COMMIT
+Migrating to AddAllowedTimelinesToUser (20150813083359)
+  [1m[36m (402.0ms)[0m  [1mALTER TABLE `users` ADD `allowed_timelines_count` int(11) DEFAULT 2[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150813083359')[0m
+  [1m[35m (39.1ms)[0m  COMMIT
+Migrating to CreateActivities (20150813132313)
+  [1m[36m (240.4ms)[0m  [1mCREATE TABLE `activities` (`id` binary(16) PRIMARY KEY, `user` binary(16), `action` varchar(255), `trackable` binary(16), `trackable_type` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150813132313')[0m
+  [1m[35m (39.4ms)[0m  COMMIT
+Migrating to AddIndexToActivities (20150813140948)
+  [1m[36m (409.2ms)[0m  [1mALTER TABLE `activities` DROP `trackable`[0m
+  [1m[35m (526.1ms)[0m  ALTER TABLE `activities` ADD `trackable_id` binary(16)
+  [1m[36m (409.6ms)[0m  [1mALTER TABLE `activities` DROP `user`[0m
+  [1m[35m (402.2ms)[0m  ALTER TABLE `activities` ADD `user_id` binary(16)
+  [1m[36m (248.9ms)[0m  [1mCREATE  INDEX `a_trackables`  ON `activities` (`trackable_id`, `trackable_type`) [0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150813140948')[0m
+  [1m[35m (39.4ms)[0m  COMMIT
+Migrating to AddLikersCountToUsers (20150814085323)
+  [1m[36m (475.8ms)[0m  [1mALTER TABLE `users` ADD `likers_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150814085323')[0m
+  [1m[35m (39.0ms)[0m  COMMIT
+Migrating to AddFolloweesCountToUser (20150814090024)
+  [1m[36m (484.1ms)[0m  [1mALTER TABLE `users` ADD `followees_count` int(11) DEFAULT 0[0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150814090024')[0m
+  [1m[35m (30.3ms)[0m  COMMIT
+Migrating to CreateDelayedJobs (20150820112614)
+  [1m[36m (273.1ms)[0m  [1mCREATE TABLE `delayed_jobs` (`id` int(11) auto_increment PRIMARY KEY, `priority` int(11) DEFAULT 0 NOT NULL, `attempts` int(11) DEFAULT 0 NOT NULL, `handler` text NOT NULL, `last_error` text, `run_at` datetime, `locked_at` datetime, `failed_at` datetime, `locked_by` varchar(255), `queue` varchar(255), `created_at` datetime, `updated_at` datetime) ENGINE=InnoDB[0m
+  [1m[35m (232.5ms)[0m  CREATE  INDEX `delayed_jobs_priority`  ON `delayed_jobs` (`priority`, `run_at`) 
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150820112614')
+  [1m[36m (31.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddDurationToVideo (20150820132005)
+  [1m[35m (509.2ms)[0m  ALTER TABLE `videos` ADD `duration` float
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.4ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150820132005')
+  [1m[36m (38.7ms)[0m  [1mCOMMIT[0m
+Migrating to AddIndexesToDelayedJob (20150826130659)
+  [1m[35m (249.0ms)[0m  CREATE  INDEX `delayed_jobs_queue`  ON `delayed_jobs` (`queue`) 
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150826130659')
+  [1m[36m (38.9ms)[0m  [1mCOMMIT[0m
+Migrating to AddIndexesToFollowQueues (20150826130751)
+  [1m[35m (265.0ms)[0m  CREATE  INDEX `fk_follows`  ON `follow_queues` (`follower_id`, `follower_type`) 
+  [1m[36m (241.1ms)[0m  [1mCREATE  INDEX `fk_followables`  ON `follow_queues` (`followable_id`, `followable_type`) [0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150826130751')[0m
+  [1m[35m (31.4ms)[0m  COMMIT
+Migrating to AddIndexesToVideos (20150826130942)
+  [1m[36m (291.1ms)[0m  [1mCREATE  INDEX `video_timelines`  ON `videos` (`timeline_id`) [0m
+  [1m[35m (0.2ms)[0m  BEGIN
+  [1m[36mSQL (0.4ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150826130942')[0m
+  [1m[35m (30.8ms)[0m  COMMIT
+Migrating to CreateBlocks (20150902161447)
+  [1m[36m (240.9ms)[0m  [1mCREATE TABLE `blocks` (`id` binary(16) PRIMARY KEY, `user_id` binary(16), `blockable_id` binary(16), `blockable_type` varchar(255), `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (442.2ms)[0m  CREATE  INDEX `b_blockables`  ON `blocks` (`blockable_id`, `blockable_type`) 
+  [1m[36m (0.2ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150902161447')
+  [1m[36m (47.4ms)[0m  [1mCOMMIT[0m
+Migrating to AddOverlayToVideo (20150903104137)
+  [1m[35m (701.3ms)[0m  ALTER TABLE `videos` ADD `overlay_text` varchar(255)
+  [1m[36m (543.0ms)[0m  [1mALTER TABLE `videos` ADD `overlay_position` float[0m
+  [1m[35m (626.1ms)[0m  ALTER TABLE `videos` ADD `overlay_size` int(11)
+  [1m[36m (560.7ms)[0m  [1mALTER TABLE `videos` ADD `overlay_color` varchar(255)[0m
+  [1m[35m (0.1ms)[0m  BEGIN
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO `schema_migrations` (`version`) VALUES ('20150903104137')[0m
+  [1m[35m (39.6ms)[0m  COMMIT
+Migrating to CreateNotifications (20150917094858)
+  [1m[36m (390.5ms)[0m  [1mCREATE TABLE `notifications` (`id` binary(16) PRIMARY KEY, `user_id` binary(16), `notification` varchar(255), `payload` text, `created_at` datetime NOT NULL, `updated_at` datetime NOT NULL) ENGINE=InnoDB[0m
+  [1m[35m (323.9ms)[0m  CREATE  INDEX `user_notifications`  ON `notifications` (`user_id`) 
+  [1m[36m (0.1ms)[0m  [1mBEGIN[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO `schema_migrations` (`version`) VALUES ('20150917094858')
+  [1m[36m (40.0ms)[0m  [1mCOMMIT[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.2ms)[0m  SELECT `schema_migrations`.* FROM `schema_migrations`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'activities'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `activities`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'blocks'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `blocks`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'delayed_jobs'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `delayed_jobs`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'follow_queues'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `follow_queues`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'follows'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `follows`
+  [1m[36m (0.3ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'likes'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `likes`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'mentions'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `mentions`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'notifications'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `notifications`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'timelines'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `timelines`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'users'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `users`
+  [1m[36m (0.2ms)[0m  [1mSELECT fk.referenced_table_name as 'to_table'
+      ,fk.referenced_column_name as 'primary_key'
+      ,fk.column_name as 'column'
+      ,fk.constraint_name as 'name'
+FROM information_schema.key_column_usage fk
+WHERE fk.referenced_column_name is not null
+  AND fk.table_schema = 'ebdb'
+  AND fk.table_name = 'videos'
+[0m
+  [1m[35m (0.1ms)[0m  SHOW CREATE TABLE `videos`
+
+
+Started GET "/stores" for 127.0.0.1 at 2016-02-12 12:32:53 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+Processing by ApplicationController#page_not_found as HTML
+  Parameters: {"path"=>"stores"}
+Completed 404 Not Found in 2ms (Views: 0.6ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/stores" for 127.0.0.1 at 2016-02-12 12:33:00 +0530
+Processing by ApplicationController#page_not_found as HTML
+  Parameters: {"path"=>"stores"}
+Completed 404 Not Found in 1ms (Views: 0.5ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2016-02-12 12:33:03 +0530
+
+
+Started GET "/" for 127.0.0.1 at 2016-02-12 12:42:39 +0530
+
+
+Started GET "/" for 127.0.0.1 at 2016-02-12 15:52:14 +0530
+  [1m[36mActiveRecord::SchemaMigration Load (0.4ms)[0m  [1mSELECT `schema_migrations`.* FROM `schema_migrations`[0m
+
+
+Started GET "/" for 127.0.0.1 at 2016-02-12 15:54:55 +0530
+
+
+Started GET "/" for 127.0.0.1 at 2016-02-12 15:55:45 +0530

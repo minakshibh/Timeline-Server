@@ -1,14 +1,14 @@
 # Using Amazon RDS here, dev & prod same db
 development:
   adapter: mysql2
-  encoding: utf8mb4
-  charset: utf8mb4
-  collation: utf8mb4_unicode_ci
+  encoding: utf8
+  charset: utf8
+  collation: utf8_unicode_ci
   database: ebdb
   username: root
   password: root
   host: localhost
-  socket: /Applications/MAMP/tmp/mysql/mysql.sock
+#  socket: /Applications/MAMP/tmp/mysql/mysql.sock
   port: 8889
 
 production:

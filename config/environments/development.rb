@@ -40,17 +40,17 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # Add configuration for Attachments via Paperclip
-  config.paperclip_defaults = {
-      :storage => :s3,
-      :s3_credentials => {
-          :bucket => "timeline-assets",
-          :access_key_id => "AKIAIKBE6LY7XH4WDEHQ",
-          :secret_access_key => "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"
-      },
-      :s3_host_name => "s3-us-west-2.amazonaws.com",
-      :url => ':s3_alias_url',
-      :s3_host_alias => 'timeline-assets.reebayinc.netdna-cdn.com'
-  }
+  # config.paperclip_defaults = {
+  #     :storage => :s3,
+  #     :s3_credentials => {
+  #         :bucket => "timeline-assets",
+  #         :access_key_id => "AKIAIKBE6LY7XH4WDEHQ",
+  #         :secret_access_key => "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"
+  #     },
+  #     :s3_host_name => "s3-us-west-2.amazonaws.com",
+  #     :url => ':s3_alias_url',
+  #     :s3_host_alias => 'timeline-assets.reebayinc.netdna-cdn.com'
+  # }
 
   # Add Bullet for performance testing
   config.after_initialize do

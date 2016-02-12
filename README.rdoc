@@ -1,0 +1,123 @@
+== README
+
+This README would normally document whatever steps are necessary to get the
+application up and running.
+
+Things you may want to cover:
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
+
+
+Please feel free to use a different markup language if you do not plan to run
+<tt>rake doc:app</tt>.
+
+== API Endpoints
+Base URL: "http://timeline-server.elasticbeanstalk.com"
+
+- Get the web token. Creates missig parse users. The returned web token must be provided in different requests for the header field +X-Timeline-Authentication+.
+  
+    GET /api/user/get_token
+    Header: X-Parse-Session-Token String
+  
+  - returns: string
+  - status-codes: 200, Todo
+    
+- Returns all data of a timeline.
+    
+    GET /api/timeline/:id
+    
+    - id: UUID of the Timeline
+    - status-codes: 200, 404, Todo
+    
+- List all moments of a specific timeline.
+    
+    GET /api/timeline/:id/videos
+    
+    - id: UUID of the Timeline
+    - returns: List of moments
+    - status-codes: 200, 404, Todo
+    
+- Creates a timeline
+    
+    POST /api/timeline/create
+    
+    - name: Name of the Timeline
+    - user_id: UUID of the user
+    - status-codes: 200, Todo
+    
+- Gets more information of a moment
+    GET /api/video/:id
+    
+    - id: UUID of the moment
+    - returns: Moment
+    - status-code: 200, 404, Todo
+
+== Documentation missing
+    PUT /api/video/create
+    video: video data
+    timeline_id: UUID of the Timeline
+    
+    DELETE /api/timeline/:uuid/delete
+    
+    POST /api/user/update
+    POST /api/user/delete
+    GET /api/user/me
+    GET /api/user/:id
+    POST /api/user/settings
+    
+    GET /api/timeline/me
+    GET /api/timeline/user/:user_id
+    
+    GET /timeline/trending
+    GET /timeline/following
+    
+    POST /api/timeline/:id/like
+    POST /api/timeline/:id/unlike
+    POST /api/timeline/:id/follow
+    POST /api/timeline/:id/unfollow
+    
+    POST /api/user/:id/like
+    POST /api/user/:id/unlike
+    POST /api/user/:id/follow
+    POST /api/user/:id/unfollow
+    
+    POST /api/user/:id/approve
+    POST /api/user/:id/decline
+    POST /api/user/:id/block
+    POST /api/user/:id/unblock
+    POST /api/timeline/:id/block
+    POST /api/timeline/:id/unblock
+    
+    GET /api/search/:searchterm
+    
+    GET /api/user/followers
+    GET /api/user/following
+    GET /api/timeline/following
+    GET /api/timeline/followers
+    GET /api/timeline/:id/followers
+    GET /api/user/blocked
+    GET /api/timeline/blocked
+    GET /api/user/follow_queue
+    
+    GET /api/user/notifications?date=:date
+    
+    POST /api/user/increment_timelines
+
+    GET /api/timeline/:id/followers
+    GET /timeline/:id/likers

@@ -81,4 +81,8 @@ group :development, :test do
   gem 'gem-licenses'
 end
 
+group :production do
+  gem 'pg'
+end
+
 

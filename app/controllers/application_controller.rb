@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
     if claims and user = User.find_by(external_id: claims[0]['user_id'])
       @current_user = user
     else
-      render :json => {:error => "You are not authorized to perform this request." }, :status => 401
+      render :json => {:error => "You are not authorized to perform this request."}, :status => 401
     end
   end
 

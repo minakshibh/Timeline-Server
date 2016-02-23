@@ -70,16 +70,16 @@ class UserController < ApplicationController
   def set_settings
     if params[:timelines_public]
       @current_user.update(timelines_public: params[:timelines_public])
-      render :json => {:success => @current_user.timelines_public }, :status => 200
+      render :json => {:success => @current_user.timelines_public}, :status => 200
     elsif params[:approve_followers]
       @current_user.update(approve_followers: params[:approve_followers])
-      render :json => {:success => @current_user.approve_followers }, :status => 200
+      render :json => {:success => @current_user.approve_followers}, :status => 200
     end
   end
 
   def increment_timelines
     if @current_user.increment!(:allowed_timelines_count, by = 1)
-      render :json => {:success => @current_user.allowed_timelines_count }, :status => 200
+      render :json => {:success => @current_user.allowed_timelines_count}, :status => 200
     end
   end
 
@@ -173,6 +173,17 @@ class UserController < ApplicationController
     end
   end
 
+  # Added by Insonix
+  def my_followers
+    begin
+      user = User.find_by_id(params[:id])
+      followers = user.followers_relation(User)
+      render :json => {:status_code => 200,:followers_count=>followers.count, :result => followers}
+    rescue Exception => error
+      render :json => {:status_code => 417, :error => error.message}
+    end
+  end
+
   def destroy
     if @current_user.delay.destroy
       render :json => {:state => "success"}, :status => 200
@@ -183,12 +194,35 @@ class UserController < ApplicationController
 
   def get_token
     if request.headers['X-Parse-Session-Token'] and
-      @user = User.find_by_parse_token(request.headers['X-Parse-Session-Token']) and
-      @auth_token = jwt_token(@user)
-        @pending_followers = FollowQueue.pending(@user).count
-        render :me
+        @user = User.find_by_parse_token(request.headers['X-Parse-Session-Token']) and
+        @auth_token = jwt_token(@user)
+      @pending_followers = FollowQueue.pending(@user).count
+      render :me
     else
-      render :json => {:error => "Error generating token." }, :status => 401
+      render :json => {:error => "Error generating token."}, :status => 401
+    end
+  end
+
+  # This is new notification API
+  def timeline_notifications
+    begin
+      result = []
+      page_id = params[:page_id].to_i
+      time_stamp = DateTime.parse(params[:date]).to_s(:db)
+      notifications = User.notifications_before_current_timestamp(@current_user, time_stamp)
+      notifications_count = notifications.count
+      notifications = notifications.limit(30).offset(page_id)
+      notifications.each do |user_notification|
+        user_notification = user_notification.as_json
+        username = user_notification['notification'].to_s.split(' ')[0].gsub('@', '')
+        user = User.find_by_name(username)
+        user_notification['username'] = user.name rescue ''
+        user_notification['user_image'] = user.image rescue ''
+        result.push(user_notification)
+      end
+      render :json => {:result => result, :status_code => 200, :page_id => (notifications_count - (page_id+30)) > 0 ? page_id+30 : nil}
+    rescue ActiveRecord::ActiveRecordError, Exception => error
+      render :json => {:error => error.message, :status_code => 417}
     end
   end
 

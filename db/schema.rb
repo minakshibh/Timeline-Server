@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150917094858) do
+ActiveRecord::Schema.define(version: 20160222125651) do
 
   create_table "activities", force: :cascade do |t|
     t.string   "action",         limit: 255
@@ -33,6 +33,22 @@ ActiveRecord::Schema.define(version: 20150917094858) do
   end
 
   add_index "blocks", ["blockable_id", "blockable_type"], name: "b_blockables", using: :btree
+
+  create_table "comments", force: :cascade do |t|
+    t.string   "title",            limit: 50,    default: ""
+    t.text     "comment",          limit: 65535
+    t.uuid     "commentable_id",   limit: 16
+    t.string   "commentable_type", limit: 255
+    t.uuid     "user_id",          limit: 16
+    t.string   "user_image",       limit: 255
+    t.string   "role",             limit: 255,   default: "comments"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["commentable_id"], name: "index_comments_on_commentable_id", using: :btree
+  add_index "comments", ["commentable_type"], name: "index_comments_on_commentable_type", using: :btree
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "delayed_jobs", force: :cascade do |t|
     t.integer  "priority",   limit: 4,     default: 0, null: false
@@ -127,6 +143,7 @@ ActiveRecord::Schema.define(version: 20150917094858) do
     t.integer  "allowed_timelines_count", limit: 4,   default: 2
     t.integer  "likers_count",            limit: 4,   default: 0
     t.integer  "followees_count",         limit: 4,   default: 0
+    t.string   "image",                   limit: 255
   end
 
   create_table "videos", force: :cascade do |t|
@@ -138,7 +155,7 @@ ActiveRecord::Schema.define(version: 20150917094858) do
     t.datetime "video_updated_at"
     t.uuid     "timeline_id",        limit: 16
     t.float    "duration",           limit: 24
-    t.string   "overlay_text",       limit: 255
+    t.string   "overlay_text",       limit: 250
     t.float    "overlay_position",   limit: 24
     t.integer  "overlay_size",       limit: 4
     t.string   "overlay_color",      limit: 255

@@ -1,6 +1,7 @@
 class Video < ActiveRecord::Base
   include ActiveUUID::UUID
-
+  # added by insonix
+  acts_as_commentable
   belongs_to :timeline
 
   default_scope {order('created_at ASC')}

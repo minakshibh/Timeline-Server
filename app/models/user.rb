@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
   has_many :timelines, dependent: :destroy
   has_many :activities
   has_many :blocks
+  has_many :notifications
+  has_many :comments
+  scope :notifications_before_current_timestamp, -> (user, time_stamp) { user.notifications.where('created_at < ?', time_stamp) }
 
   acts_as_liker
   acts_as_likeable
@@ -48,7 +51,6 @@ class User < ActiveRecord::Base
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true if uri.scheme == 'https'
-
     response = nil
 
     http.start do |h|
@@ -76,13 +78,13 @@ class User < ActiveRecord::Base
     end
   end
 
+  # Add user_image by insonix
   def self.update_from_parse(objectId)
     # retrieve user from Parse
     uri = URI.parse("https://api.parse.com/1/users/" + objectId)
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true if uri.scheme == 'https'
-
     response = nil
 
     http.start do |h|
@@ -94,10 +96,10 @@ class User < ActiveRecord::Base
     end
 
     user = JSON.parse(response.body)
-
+    user_profile_image = user['profile_picture']['url'] rescue ''
     # update with current data from parse
     u_obj = User.find_by_external_id(objectId)
-    u_obj.update(email: user['email'])
+    u_obj.update_columns(email: user['email'], image: user_profile_image)
 
     u_obj
   end

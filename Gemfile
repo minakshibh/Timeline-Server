@@ -61,6 +61,11 @@ gem 'delayed_paperclip'
 # Health Check for AWS
 gem 'health_check'
 
+# added by insonix
+# handle comment for all models
+gem 'acts_as_commentable'
+# gem "acts_as_follower"
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 

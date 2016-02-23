@@ -2,20 +2,24 @@ Rails.application.routes.draw do
 
   scope '/api' do
     scope '/user' do
-      get '/' => 'user#index', defaults: { format: :json }
-      get 'get_token' => 'user#get_token', defaults: { format: :json }
-      get 'me' => 'user#me', defaults: { format: :json }
+      #--------------------- created by insonix --------------------------#
+      get 'timeline_notifications' => 'user#timeline_notifications'
+      get 'my_followers' => 'user#my_followers'
+      #-------------------------------------------------------------------#
+      get '/' => 'user#index', defaults: {format: :json}
+      get 'get_token' => 'user#get_token', defaults: {format: :json}
+      get 'me' => 'user#me', defaults: {format: :json}
       post 'update' => 'user#update'
       post 'increment_timelines' => 'user#increment_timelines'
       post '/delete' => 'user#destroy'
-      get '/follow_queue' => 'user#follow_queue', defaults: { format: :json }
-      get '/following' => 'user#following', defaults: { format: :json }
-      get '/followers' => 'user#followers', defaults: { format: :json }
-      get '/blocked' => 'user#blocked', defaults: { format: :json }
+      get '/follow_queue' => 'user#follow_queue', defaults: {format: :json}
+      get '/following' => 'user#following', defaults: {format: :json}
+      get '/followers' => 'user#followers', defaults: {format: :json}
+      get '/blocked' => 'user#blocked', defaults: {format: :json}
       get '/notifications' => 'user#notifications'
       post '/settings' => 'user#set_settings'
-      get '/:id/followers' => 'user#user_followers', defaults: { format: :json }
-      get '/:id/likers' => 'user#likers', defaults: { format: :json }
+      get '/:id/followers' => 'user#user_followers', defaults: {format: :json}
+      get '/:id/likers' => 'user#likers', defaults: {format: :json}
       post '/:id/follow' => 'user#follow'
       post '/:id/unfollow' => 'user#unfollow'
       post '/:id/like' => 'user#like'
@@ -24,30 +28,38 @@ Rails.application.routes.draw do
       post '/:id/unblock' => 'user#unblock'
       post '/:id/accept' => 'user#accept'
       post '/:id/decline' => 'user#decline'
-      get '/:id' => 'user#show', defaults: { format: :json }
+      get '/:id' => 'user#show', defaults: {format: :json}
     end
     scope '/timeline' do
-      get '/:id/videos' => 'timeline#show_videos', defaults: { format: :json }
-      get '/:id/followers' => 'timeline#followers', defaults: { format: :json }
-      get '/:id/likers' => 'timeline#likers', defaults: { format: :json }
+      #--------------------- added by insonix --------------------------#
+      get '/:id/comments' => 'timeline#fetch_comments'
+      post '/:id/comment' => 'timeline#post_comment'
+      #-------------------------------------------------------------------#
+      get '/:id/videos' => 'timeline#show_videos', defaults: {format: :json}
+      get '/:id/followers' => 'timeline#followers', defaults: {format: :json}
+      get '/:id/likers' => 'timeline#likers', defaults: {format: :json}
       post '/:id/like' => 'timeline#like'
       post '/:id/unlike' => 'timeline#unlike'
       post '/:id/follow' => 'timeline#follow'
       post '/:id/unfollow' => 'timeline#unfollow'
       post '/:id/block' => 'timeline#block'
       post '/:id/unblock' => 'timeline#unblock'
-      post 'create' => 'timeline#create', defaults: { format: :json }
-      get '/blocked' => 'timeline#blocked', defaults: { format: :json }
-      get '/me' => 'timeline#me', defaults: { format: :json }
-      get '/' => 'timeline#index', defaults: { format: :json }
-      get '/user/:user_id' => 'timeline#user', defaults: { format: :json }
-      get '/following' => 'timeline#following', defaults: { format: :json }
-      get '/trending' => 'timeline#trending', defaults: { format: :json }
-      get '/followers' => 'timeline#all_followers', defaults: { format: :json }
-      get '/:id' => 'timeline#show', defaults: { format: :json }
+      post 'create' => 'timeline#create', defaults: {format: :json}
+      get '/blocked' => 'timeline#blocked', defaults: {format: :json}
+      get '/me' => 'timeline#me', defaults: {format: :json}
+      get '/' => 'timeline#index', defaults: {format: :json}
+      get '/user/:user_id' => 'timeline#user', defaults: {format: :json}
+      get '/following' => 'timeline#following', defaults: {format: :json}
+      get '/trending' => 'timeline#trending', defaults: {format: :json}
+      get '/followers' => 'timeline#all_followers', defaults: {format: :json}
+      get '/:id' => 'timeline#show', defaults: {format: :json}
       delete '/:id' => 'timeline#destroy'
     end
     scope '/video' do
+      #--------------------- added by insonix --------------------------#
+      get '/:id/comments' => 'video#fetch_comments'
+      post '/:id/comment' => 'video#post_comment'
+      #-------------------------------------------------------------------#
       put 'create' => 'video#create'
       post 'create' => 'video#create'
       get '/:id' => 'video#show'

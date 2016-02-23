@@ -3,7 +3,8 @@ class Timeline < ActiveRecord::Base
 
   has_many :videos, dependent: :destroy
   belongs_to :user
-
+  # added by insonix
+  acts_as_commentable
   before_validation :normalize_name
   validates_presence_of :user_id, :name
   validate :timeline_limit_reached, :dublicate_name, on: :create

@@ -1,7 +1,7 @@
 class TimelineController < ApplicationController
 
   skip_before_filter :authenticate_user_from_token!, :only => :webview
-
+  skip_before_action :verify_authenticity_token, :only => [:post_comment, :fetch_comments]
   before_action :set_timeline, :except => [:index, :me, :user, :create, :destroy, :following, :trending, :unfollow, :block, :unblock, :all_followers, :webview, :blocked]
 
   # views
@@ -32,7 +32,7 @@ class TimelineController < ApplicationController
   end
 
   def trending
-    @timelines = Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: { id: nil }).order(updated_at: :desc, likers_count: :desc, followers_count: :desc).limit(25)
+    @timelines = Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: {id: nil}).order(updated_at: :desc, likers_count: :desc, followers_count: :desc).limit(25)
     render :index
   end
 
@@ -90,12 +90,12 @@ class TimelineController < ApplicationController
       render :json => {:state => "pending"}, :status => 200
     else
 =end
-      if @current_user.follow!(@timeline)
-        track_activity @timeline
-        render :json => {:followers => @timeline.followers(User).count, :state => "success"}, :status => 200
-      else
-        render :json => {:state => "following"}, :status => 200
-      end
+    if @current_user.follow!(@timeline)
+      track_activity @timeline
+      render :json => {:followers => @timeline.followers(User).count, :state => "success"}, :status => 200
+    else
+      render :json => {:state => "following"}, :status => 200
+    end
 #    end
   end
 
@@ -139,7 +139,7 @@ class TimelineController < ApplicationController
       track_activity @timeline
       render :show
     else
-      render :json => {:error => @timeline.errors.full_messages }, :status => 400
+      render :json => {:error => @timeline.errors.full_messages}, :status => 400
     end
   end
 
@@ -147,9 +147,38 @@ class TimelineController < ApplicationController
     @timeline = Timeline.find(params[:id])
     if @timeline.destroy
       track_activity @timeline
-      render :json => {:success => true }, :status => 200
+      render :json => {:success => true}, :status => 200
     else
-      render :json => {:error => @timeline.errors.full_messages }, :status => 400
+      render :json => {:error => @timeline.errors.full_messages}, :status => 400
+    end
+  end
+
+  # Added by insonix
+  def post_comment
+    begin
+      timeline = Timeline.find_by_id(params[:id])
+      user = User.find_by_id(params[:user_id])
+      user_profile_image = @current_user.parse_profile_image rescue ''
+      timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => user.id, :user_image => user_profile_image)
+      render :json => {:status_code => 200, :success => 'comment created successfully'}
+    rescue ActiveRecord::ActiveRecordError, Exception => error
+      render :json => {:status_code => 417, :error => error.message}
+    end
+  end
+
+  # Added by insonix
+  def fetch_comments
+    begin
+      result = []
+      timeline = Timeline.find_by_id(params[:id])
+      timeline.comments.includes(:user).each do |object|
+        record = object.as_json
+        record[:username] = object.user.name
+        result.push(record)
+      end
+      render :json => {:status_code => 200, :comments_count => result.count, :result => result}
+    rescue ActiveRecord::ActiveRecordError, Exception => error
+      render :json => {:status_code => 417, :error => error.message}
     end
   end
 

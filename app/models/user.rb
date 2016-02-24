@@ -99,6 +99,7 @@ class User < ActiveRecord::Base
     user_profile_image = user['profile_picture']['url'] rescue ''
     # update with current data from parse
     u_obj = User.find_by_external_id(objectId)
+    Rails.logger.info "=======user_image=#{user_profile_image}"
     u_obj.update_columns(email: user['email'], image: user_profile_image)
 
     u_obj

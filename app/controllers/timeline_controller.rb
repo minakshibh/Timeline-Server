@@ -157,9 +157,8 @@ class TimelineController < ApplicationController
   def post_comment
     begin
       timeline = Timeline.find_by_id(params[:id])
-      user = User.find_by_id(params[:user_id])
       user_profile_image = @current_user.parse_profile_image rescue ''
-      timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => user.id, :user_image => user_profile_image)
+      timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id =>@current_user.id, :user_image => user_profile_image)
       render :json => {:status_code => 200, :success => 'comment created successfully'}
     rescue ActiveRecord::ActiveRecordError, Exception => error
       render :json => {:status_code => 417, :error => error.message}

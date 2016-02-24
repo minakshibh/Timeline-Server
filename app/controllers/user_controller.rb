@@ -176,8 +176,7 @@ class UserController < ApplicationController
   # Added by Insonix
   def my_followers
     begin
-      user = User.find_by_id(params[:id])
-      followers = user.followers_relation(User)
+      followers = @current_user.followers_relation(User)
       render :json => {:status_code => 200,:followers_count=>followers.count, :result => followers}
     rescue Exception => error
       render :json => {:status_code => 417, :error => error.message}

@@ -160,15 +160,16 @@ class TimelineController < ApplicationController
     begin
       timeline = Timeline.find_by_id(params[:id])
       user_profile_image = @current_user.parse_profile_image rescue ''
-
-      #check if @  exist int comment to not, If it exist set variable 'user_name' if not left it empty.
-      user_name = (params[:comment].include? "@") ? str.split("@")[1].split[0] : ""
-      if user_name.present?
-        #Send the notification
-
+      comment = timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => @current_user.id, :user_image => user_profile_image)
+      if params[:tag_users].present?
+        params[:tag_users].split(',').each do |tag_user_id|
+          user = User.find_by_id(tag_user_id)
+          payload = {:user_id => user.id, :timeline_id => timeline.id, :name => timeline.name}
+          comment.mention!(user)
+          # Create Notification
+          Notification.create(:user_id => user.id, :notification => "@#{@current_user.name} mention you in timeline ##{timeline.name} comment", :payload => payload.to_json)
+        end
       end
-
-      timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => @current_user.id, :user_image => user_profile_image)
       render :json => {:status_code => 200, :success => 'comment created successfully'}
     rescue ActiveRecord::ActiveRecordError, Exception => error
       render :json => {:status_code => 417, :error => error.message}

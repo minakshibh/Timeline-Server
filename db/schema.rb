@@ -114,9 +114,9 @@ ActiveRecord::Schema.define(version: 20160301063039) do
 
   create_table "mentions", force: :cascade do |t|
     t.string   "mentioner_type",   limit: 255
-    t.integer  "mentioner_id",     limit: 4
+    t.uuid     "mentioner_id",     limit: 16
     t.string   "mentionable_type", limit: 255
-    t.integer  "mentionable_id",   limit: 4
+    t.uuid     "mentionable_id",   limit: 16
     t.datetime "created_at"
   end
 

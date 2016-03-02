@@ -1,10 +1,11 @@
 class CreateMentions < ActiveRecord::Migration
   def change
-    create_table :mentions do |t|
+    create_table :mentions,:id=>false do |t|
+      t.uuid :id,:primary_key=>true
       t.string  :mentioner_type
-      t.integer :mentioner_id
+      t.uuid :mentioner_id
       t.string  :mentionable_type
-      t.integer :mentionable_id
+      t.uuid :mentionable_id
       t.datetime :created_at
     end
 

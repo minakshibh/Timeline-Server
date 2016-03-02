@@ -5,6 +5,8 @@ class Timeline < ActiveRecord::Base
   belongs_to :user
   # added by insonix
   acts_as_commentable
+  has_many :group_timelines, dependent: :destroy
+
   before_validation :normalize_name
   validates_presence_of :user_id, :name
   validate :timeline_limit_reached, :dublicate_name, on: :create

@@ -96,11 +96,21 @@ class User < ActiveRecord::Base
     end
 
     user = JSON.parse(response.body)
+
     user_profile_image = user['profile_picture']['url'] rescue ''
+#added new fields in
+    user_profile_bio = user['bio'] rescue ''
+    user_profile_firstname = user['firstname'] rescue ''
+    user_profile_lastname = user['lastname'] rescue ''
+    user_profile_website = user['website'] rescue ''
+    user_profile_other = user['other'] rescue ''
+
     # update with current data from parse
     u_obj = User.find_by_external_id(objectId)
     Rails.logger.info "=======user_image=#{user_profile_image}"
-    u_obj.update_columns(email: user['email'], image: user_profile_image)
+
+    u_obj.update_columns(email: user['email'], image: user_profile_image, bio: user_profile_bio, firstname: user_profile_firstname, lastname: user_profile_lastname ,website: user_profile_website, other: user_profile_other)
+    #u_obj.update_columns(email: user['email'], image: user_profile_image, bio:user_profile_bio, )
 
     u_obj
   end

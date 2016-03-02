@@ -216,6 +216,9 @@ class UserController < ApplicationController
         username = user_notification['notification'].to_s.split(' ')[0].gsub('@', '')
         user = User.find_by_name(username)
         user_notification['username'] = user.name rescue ''
+        user_notification['first_name'] = user.firstname rescue ''
+        user_notification['last_name'] = user.lastname rescue ''
+        user_notification['username_id'] = user.id rescue ''
         user_notification['user_image'] = user.image rescue ''
         result.push(user_notification)
       end

@@ -2,7 +2,7 @@ class TimelineController < ApplicationController
 
   skip_before_filter :authenticate_user_from_token!, :only => :webview
   skip_before_action :verify_authenticity_token, :only => [:post_comment, :fetch_comments]
-  before_action :set_timeline, :except => [:index, :me, :user, :create, :destroy, :following, :trending, :unfollow, :block, :unblock, :all_followers, :webview, :blocked]
+  before_action :set_timeline, :except => [:index, :me, :user, :create, :create_group_timeline, :destroy, :following, :trending, :unfollow, :block, :unblock, :all_followers, :webview, :blocked]
 
   # views
 
@@ -17,7 +17,7 @@ class TimelineController < ApplicationController
   end
 
   def me
-    @timelines = Timeline.where(:user_id => @current_user.id).order(updated_at: :desc)
+    @timelines = Timeline.where(:user_id => @current_user.id, :group_timeline => false).order(updated_at: :desc)
     render :index
   end
 
@@ -134,9 +134,11 @@ class TimelineController < ApplicationController
   def create
     @timeline = Timeline.new(timeline_params)
     @timeline.user_id = @current_user.id
-
+    # Modify by insonix
+    participants = set_group_timeline_participants(params) if params[:group_timeline].to_s.eql?('1')
     if @timeline.save
       track_activity @timeline
+      @timeline.group_timelines.create(:participants => participants, :admin_id => @current_user.id, :admin_name => @current_user.name) if params[:group_timeline].to_s.eql?('1')
       render :show
     else
       render :json => {:error => @timeline.errors.full_messages}, :status => 400
@@ -158,7 +160,15 @@ class TimelineController < ApplicationController
     begin
       timeline = Timeline.find_by_id(params[:id])
       user_profile_image = @current_user.parse_profile_image rescue ''
-      timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id =>@current_user.id, :user_image => user_profile_image)
+
+      #check if @  exist int comment to not, If it exist set variable 'user_name' if not left it empty.
+      user_name = (params[:comment].include? "@") ? str.split("@")[1].split[0] : ""
+      if user_name.present?
+        #Send the notification
+
+      end
+
+      timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => @current_user.id, :user_image => user_profile_image)
       render :json => {:status_code => 200, :success => 'comment created successfully'}
     rescue ActiveRecord::ActiveRecordError, Exception => error
       render :json => {:status_code => 417, :error => error.message}
@@ -172,7 +182,11 @@ class TimelineController < ApplicationController
       timeline = Timeline.find_by_id(params[:id])
       timeline.comments.includes(:user).each do |object|
         record = object.as_json
-        record[:username] = object.user.name
+        record[:username] = object.user.name rescue ''
+        user_id = object.user.id rescue ''
+        external_id = object.user.external_id rescue ''
+        name = object.user.name rescue ''
+        record[:payload] = {'user_id' => user_id, 'external' => external_id, 'name' => name}.to_json.to_s
         result.push(record)
       end
       render :json => {:status_code => 200, :comments_count => result.count, :result => result}
@@ -184,11 +198,23 @@ class TimelineController < ApplicationController
   private
 
   def timeline_params
-    params.permit(:name)
+    params.permit(:name, :group_timeline, :description)
+  end
+
+  def group_timeline_params
+    params.permit(params[:name], params[:description], params[:owner])
   end
 
   def set_timeline
     @timeline = Timeline.public_or_own(@current_user).find params[:id]
+  end
+
+  def set_group_timeline_participants(params)
+    participants = []
+    params[:participants].split(',').each do |member|
+      participants.push(member)
+    end
+    participants
   end
 
 end

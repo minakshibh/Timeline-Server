@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       #--------------------- added by insonix --------------------------#
       get '/:id/comments' => 'timeline#fetch_comments'
       post '/:id/comment' => 'timeline#post_comment'
+      post 'create_group_timeline' => 'timeline#create_group_timeline', defaults: {format: :json}
       #-------------------------------------------------------------------#
       get '/:id/videos' => 'timeline#show_videos', defaults: {format: :json}
       get '/:id/followers' => 'timeline#followers', defaults: {format: :json}

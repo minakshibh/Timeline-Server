@@ -36,7 +36,11 @@ class VideoController < ApplicationController
       video = Video.find_by_id(params[:id])
       video.comments.includes(:user).each do |object|
         record = object.as_json
-        record[:username] = object.user.name
+        record[:username] = object.user.name rescue ''
+        user_id = object.user.id rescue ''
+        external_id =  object.user.external_id rescue ''
+        name = object.user.name rescue ''
+        record[:payload] = {'user_id'=>user_id,'external'=>external_id,'name'=>name}.to_json.to_s
         result.push(record)
       end
       render :json => {:status_code => 200, :comments_count => result.count, :result => result}

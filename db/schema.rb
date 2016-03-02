@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160222125651) do
+ActiveRecord::Schema.define(version: 20160301063039) do
 
   create_table "activities", force: :cascade do |t|
     t.string   "action",         limit: 255
@@ -90,6 +90,17 @@ ActiveRecord::Schema.define(version: 20160222125651) do
   add_index "follows", ["followable_id", "followable_type"], name: "fk_followables", using: :btree
   add_index "follows", ["follower_id", "follower_type"], name: "fk_follows", using: :btree
 
+  create_table "group_timelines", force: :cascade do |t|
+    t.uuid     "timeline_id",  limit: 16
+    t.uuid     "admin_id",     limit: 16
+    t.string   "admin_name",   limit: 255
+    t.text     "participants", limit: 65535
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "group_timelines", ["timeline_id"], name: "index_group_timelines_on_timeline_id", using: :btree
+
   create_table "likes", force: :cascade do |t|
     t.string   "liker_type",    limit: 255
     t.uuid     "liker_id",      limit: 16
@@ -125,10 +136,12 @@ ActiveRecord::Schema.define(version: 20160222125651) do
   create_table "timelines", force: :cascade do |t|
     t.string   "name",            limit: 255
     t.uuid     "user_id",         limit: 16
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.integer  "likers_count",    limit: 4,   default: 0
     t.integer  "followers_count", limit: 4,   default: 0
+    t.boolean  "group_timeline",              default: false
+    t.string   "description",     limit: 255, default: ""
   end
 
   create_table "users", force: :cascade do |t|
@@ -144,6 +157,11 @@ ActiveRecord::Schema.define(version: 20160222125651) do
     t.integer  "likers_count",            limit: 4,   default: 0
     t.integer  "followees_count",         limit: 4,   default: 0
     t.string   "image",                   limit: 255
+    t.string   "bio",                     limit: 255
+    t.string   "firstname",               limit: 255
+    t.string   "lastname",                limit: 255
+    t.string   "website",                 limit: 255
+    t.string   "other",                   limit: 255
   end
 
   create_table "videos", force: :cascade do |t|

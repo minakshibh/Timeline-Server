@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160301063039) do
+ActiveRecord::Schema.define(version: 20160303103331) do
 
   create_table "activities", force: :cascade do |t|
     t.string   "action",         limit: 255
@@ -92,8 +92,8 @@ ActiveRecord::Schema.define(version: 20160301063039) do
 
   create_table "group_timelines", force: :cascade do |t|
     t.uuid     "timeline_id",  limit: 16
-    t.uuid     "admin_id",     limit: 16
-    t.string   "admin_name",   limit: 255
+    t.uuid     "user_id",      limit: 16
+    t.string   "user_name",    limit: 255
     t.text     "participants", limit: 65535
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -136,12 +136,11 @@ ActiveRecord::Schema.define(version: 20160301063039) do
   create_table "timelines", force: :cascade do |t|
     t.string   "name",            limit: 255
     t.uuid     "user_id",         limit: 16
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
     t.integer  "likers_count",    limit: 4,   default: 0
     t.integer  "followers_count", limit: 4,   default: 0
-    t.boolean  "group_timeline",              default: false
-    t.string   "description",     limit: 255, default: ""
+    t.integer  "comments_count",  limit: 4,   default: 0
   end
 
   create_table "users", force: :cascade do |t|
@@ -162,11 +161,12 @@ ActiveRecord::Schema.define(version: 20160301063039) do
     t.string   "lastname",                limit: 255
     t.string   "website",                 limit: 255
     t.string   "other",                   limit: 255
+    t.integer  "mentioners_count",        limit: 4,   default: 0
   end
 
   create_table "videos", force: :cascade do |t|
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.string   "video_file_name",    limit: 255
     t.string   "video_content_type", limit: 255
     t.integer  "video_file_size",    limit: 4
@@ -177,6 +177,7 @@ ActiveRecord::Schema.define(version: 20160301063039) do
     t.float    "overlay_position",   limit: 24
     t.integer  "overlay_size",       limit: 4
     t.string   "overlay_color",      limit: 255
+    t.integer  "comments_count",     limit: 4,   default: 0
   end
 
   add_index "videos", ["timeline_id"], name: "video_timelines", using: :btree

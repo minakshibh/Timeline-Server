@@ -7,7 +7,9 @@ class TimelineController < ApplicationController
   # views
 
   def index
+    @group_timelines = []
     @timelines = Timeline.public_or_own(@current_user).order(updated_at: :desc).limit(25)
+    GroupTimeline.public_or_own(@current_user).each { |record| record.participants.each { |participant| @group_timelines.push(record) if participant.to_s.eql?(@current_user.id.to_s.gsub('-', '')) } }
   end
 
   def show
@@ -17,22 +19,34 @@ class TimelineController < ApplicationController
   end
 
   def me
-    @timelines = Timeline.where(:user_id => @current_user.id, :group_timeline => false).order(updated_at: :desc)
+    @group_timelines = []
+    @timelines = Timeline.where(:user_id => @current_user.id).order(updated_at: :desc)
+    GroupTimeline.public_or_own(@current_user).each { |record| record.participants.each { |participant| @group_timelines.push(record) if participant.to_s.eql?(@current_user.id.to_s.gsub('-', '')) } }
+    @group_timelines.sort_by! { |record| record.updated_at }.reverse!
     render :index
   end
 
   def user
+    @group_timelines = []
     @timelines = Timeline.public_or_own(@current_user).where(:user_id => params[:user_id])
+    GroupTimeline.public_or_own(@current_user).each { |record| record.participants.each { |participant| @group_timelines.push(record) if participant.to_s.eql?(@current_user.id.to_s.gsub('-', '')) } }
     render :index
   end
 
   def following
+    @group_timelines = []
     @timelines = Timeline.followed_by(@current_user).order(updated_at: :desc)
+    @timelines.select { |timeline| timeline.group_timeline }.each do |timeline|
+      @group_timelines.push(GroupTimeline.find_by_timeline_id(timeline.id))
+    end
+
     render :index
   end
 
   def trending
+    @group_timelines = []
     @timelines = Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: {id: nil}).order(updated_at: :desc, likers_count: :desc, followers_count: :desc).limit(25)
+    GroupTimeline.public_or_own(@current_user).each { |record| record.participants.each { |participant| @group_timelines.push(record) if participant.to_s.eql?(@current_user.id.to_s.gsub('-', '')) } }
     render :index
   end
 

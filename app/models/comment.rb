@@ -2,7 +2,7 @@ class Comment < ActiveRecord::Base
   include ActiveUUID::UUID
   include ActsAsCommentable::Comment
 
-  belongs_to :commentable, :polymorphic => true
+  belongs_to :commentable, :polymorphic => true,:counter_cache => true
   acts_as_mentioner
   default_scope -> { order('created_at ASC') }
   # NOTE: install the acts_as_votable plugin if you

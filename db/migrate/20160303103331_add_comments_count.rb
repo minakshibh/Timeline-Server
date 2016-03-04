@@ -17,6 +17,6 @@ class AddCommentsCount < ActiveRecord::Migration
 
   def self.down
     remove_column :timelines, :comments_count
-    remove_column :videoss, :comments_count
+    remove_column :videos, :comments_count
   end
 end

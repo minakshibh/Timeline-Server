@@ -1,7 +1,7 @@
 class Comment < ActiveRecord::Base
   include ActiveUUID::UUID
   include ActsAsCommentable::Comment
-
+  # Added by insonix
   belongs_to :commentable, :polymorphic => true,:counter_cache => true
   acts_as_mentioner
   default_scope -> { order('created_at ASC') }

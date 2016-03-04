@@ -1,31 +1,38 @@
-if @timelines.present?
-  json.array! @timelines do |timeline|
-    json.merge! timeline.attributes
-    json.moments_count timeline.videos.count
-    json.moments_duration timeline.videos.sum(:duration)
-    json.followed @current_user.follows?(timeline)
-    json.liked @current_user.likes?(timeline)
-    json.blocked @current_user.blocked?(timeline)
-  end
-end
+##------------------------ Initial Code ---------------------------------------------##
+# json.array! @timelines do |timeline|
+#   json.merge! timeline.attributes
+#   json.moments_count timeline.videos.count
+#   json.moments_duration timeline.videos.sum(:duration)
+#   json.followed @current_user.follows?(timeline)
+#   json.liked @current_user.likes?(timeline)
+#   json.blocked @current_user.blocked?(timeline)
+# end
+
+##-------------------------------------------------------------------------------------##
 
 
-if @group_timelines.present?
-  group_participant = []
-  begin
-    json.array! @group_timelines do |my_timeline|
-      # puts "==class=#{my_timeline.class}==\n==mytimeline=#{my_timeline.as_json}===\n====group_timeline=#{@group_timelines}"
-      single_timeline = Timeline.find_by_id(my_timeline.timeline_id)
-      json.merge! single_timeline.attributes
-      my_timeline.participants.each do |participant|
+
+##------------------------ Modified Code ---------------------------------------------##
+##----------------------- Added by Insonix -------------------------------------------##
+json.array! @timelines do |timeline|
+  json.merge! timeline.attributes
+  json.moments_count timeline.videos.count
+  json.moments_duration timeline.videos.sum(:duration)
+  json.followed @current_user.follows?(timeline)
+  json.liked @current_user.likes?(timeline)
+  json.blocked @current_user.blocked?(timeline)
+  if timeline.group_timeline.present?
+    group_participant = []
+    begin
+      group_timeline = GroupTimeline.find_by_timeline_id(timeline.id)
+      group_timeline.participants.each do |participant|
         group_participant.push(User.find_by_id(participant).as_json)
       end
-
-      json.admin_id my_timeline.user_id
-      json.admin_name my_timeline.user_name
+      json.admin_id group_timeline.user_id
+      json.admin_name group_timeline.user_name
       json.participants group_participant
-
+    rescue Exception => error
     end
-  rescue Exception => error
   end
 end
+##-------------------------------------------------------------------------------------##

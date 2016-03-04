@@ -136,11 +136,13 @@ ActiveRecord::Schema.define(version: 20160303103331) do
   create_table "timelines", force: :cascade do |t|
     t.string   "name",            limit: 255
     t.uuid     "user_id",         limit: 16
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
     t.integer  "likers_count",    limit: 4,   default: 0
     t.integer  "followers_count", limit: 4,   default: 0
     t.integer  "comments_count",  limit: 4,   default: 0
+    t.boolean  "group_timeline",              default: false
+    t.string   "description",     limit: 255, default: ""
   end
 
   create_table "users", force: :cascade do |t|
@@ -155,13 +157,6 @@ ActiveRecord::Schema.define(version: 20160303103331) do
     t.integer  "allowed_timelines_count", limit: 4,   default: 2
     t.integer  "likers_count",            limit: 4,   default: 0
     t.integer  "followees_count",         limit: 4,   default: 0
-    t.string   "image",                   limit: 255
-    t.string   "bio",                     limit: 255
-    t.string   "firstname",               limit: 255
-    t.string   "lastname",                limit: 255
-    t.string   "website",                 limit: 255
-    t.string   "other",                   limit: 255
-    t.integer  "mentioners_count",        limit: 4,   default: 0
   end
 
   create_table "videos", force: :cascade do |t|

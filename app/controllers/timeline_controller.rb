@@ -1,5 +1,7 @@
 class TimelineController < ApplicationController
-
+  #Added by insonix
+  before_action :set_timeline_instance, :only => [:index, :me, :user, :following, :trending]
+  before_action :check_timeline_presence,:only => [:post_comment,:fetch_comments]
   skip_before_filter :authenticate_user_from_token!, :only => :webview
   skip_before_action :verify_authenticity_token, :only => [:post_comment, :fetch_comments]
   before_action :set_timeline, :except => [:index, :me, :user, :create, :create_group_timeline, :destroy, :following, :trending, :unfollow, :block, :unblock, :all_followers, :webview, :blocked]
@@ -7,9 +9,15 @@ class TimelineController < ApplicationController
   # views
 
   def index
-    @group_timelines = []
-    @timelines = Timeline.public_or_own(@current_user).order(updated_at: :desc).limit(25)
-    GroupTimeline.public_or_own(@current_user).each { |record| record.participants.each { |participant| @group_timelines.push(record) if participant.to_s.eql?(@current_user.id.to_s.gsub('-', '')) } }
+    ##--------------------------------- Initial Code ------------------------------------##
+    # @timelines = Timeline.public_or_own(@current_user).order(updated_at: :desc).limit(25)
+    ##-----------------------------------------------------------------------------------##
+
+    ##----------------------------- Modified Code (By Insonix) --------------------------##
+    Timeline.public_or_own(@current_user).limit(25).each { |timeline| @timelines.push(timeline) }
+    GroupTimeline.includes(:timeline).public_or_own(@current_user).limit(25).each { |group_timeline| @timelines.push(group_timeline.timeline) }
+    @timelines.sort_by! { |record| record.updated_at }.reverse!
+    ##-----------------------------------------------------------------------------------##
   end
 
   def show
@@ -19,35 +27,49 @@ class TimelineController < ApplicationController
   end
 
   def me
-    @group_timelines = []
-    @timelines = Timeline.where(:user_id => @current_user.id).order(updated_at: :desc)
-    GroupTimeline.public_or_own(@current_user).each { |record| record.participants.each { |participant| @group_timelines.push(record) if participant.to_s.eql?(@current_user.id.to_s.gsub('-', '')) } }
-    @group_timelines.sort_by! { |record| record.updated_at }.reverse!
+    ##--------------------------------- Initial Code ------------------------------------##
+    # @timelines = Timeline.where(:user_id => @current_user.id).order(updated_at: :desc)
+    # render :index
+    ##-----------------------------------------------------------------------------------##
+
+    ##----------------------------- Modified Code (By Insonix) --------------------------##
+    Timeline.where(:user_id => @current_user.id).each { |timeline| @timelines.push(timeline) }
+    GroupTimeline.includes(:timeline).all.each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.gsub('-', '').eql?(@current_user.id.to_s.gsub('-', '')) } }
+    @timelines.sort_by! { |record| record.updated_at }.reverse!
     render :index
+    ##-----------------------------------------------------------------------------------##
   end
 
   def user
-    @group_timelines = []
-    @timelines = Timeline.public_or_own(@current_user).where(:user_id => params[:user_id])
-    GroupTimeline.public_or_own(@current_user).each { |record| record.participants.each { |participant| @group_timelines.push(record) if participant.to_s.eql?(@current_user.id.to_s.gsub('-', '')) } }
+    ##--------------------------------- Initial Code ------------------------------------##
+    # @timelines = Timeline.public_or_own(@current_user).where(:user_id => params[:user_id])
+    # render :index
+    ##-----------------------------------------------------------------------------------##
+
+    ##----------------------------- Modified Code (By Insonix) --------------------------##
+    Timeline.public_or_own(@current_user).where(:user_id => params[:user_id]).each { |timeline| @timelines.push(timeline) }
+    GroupTimeline.includes(:timeline).public_or_own(@current_user).each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.gsub('-', '').eql?(params[:user_id].to_s.gsub('-', '')) } }
     render :index
+    ##-----------------------------------------------------------------------------------##
   end
 
   def following
-    @group_timelines = []
     @timelines = Timeline.followed_by(@current_user).order(updated_at: :desc)
-    @timelines.select { |timeline| timeline.group_timeline }.each do |timeline|
-      @group_timelines.push(GroupTimeline.find_by_timeline_id(timeline.id))
-    end
-
     render :index
   end
 
   def trending
-    @group_timelines = []
-    @timelines = Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: {id: nil}).order(updated_at: :desc, likers_count: :desc, followers_count: :desc).limit(25)
-    GroupTimeline.public_or_own(@current_user).each { |record| record.participants.each { |participant| @group_timelines.push(record) if participant.to_s.eql?(@current_user.id.to_s.gsub('-', '')) } }
+    ##--------------------------------- Initial Code ------------------------------------##
+    # @timelines = Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: { id: nil }).order(updated_at: :desc, likers_count: :desc, followers_count: :desc).limit(25)
+    # render :index
+    ##-----------------------------------------------------------------------------------##
+
+    ##----------------------------- Modified Code (By Insonix) --------------------------##
+    Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: {id: nil}).limit(25).each { |timeline| @timelines.push(timeline) }
+    GroupTimeline.includes(:timeline).public_or_own(@current_user).each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.gsub('-', '').eql?(@current_user.id.to_s.gsub('-', '')) } }
+    @timelines.sort_by! { |record| [record.updated_at, record.likers_count, record.followers_count] }.reverse!
     render :index
+    ##-----------------------------------------------------------------------------------##
   end
 
   def followers
@@ -172,16 +194,15 @@ class TimelineController < ApplicationController
   # Added by insonix
   def post_comment
     begin
-      timeline = Timeline.find_by_id(params[:id])
       user_profile_image = @current_user.parse_profile_image rescue ''
-      comment = timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => @current_user.id, :user_image => user_profile_image)
+      comment = @timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => @current_user.id, :user_image => user_profile_image)
       if params[:tag_users].present?
         params[:tag_users].split(',').each do |tag_user_id|
           user = User.find_by_id(tag_user_id)
-          payload = {:user_id => user.id, :timeline_id => timeline.id, :name => timeline.name}
+          payload = {:user_id => user.id, :timeline_id => @timeline.id, :name => @timeline.name}
           comment.mention!(user)
           # Create Notification
-          Notification.create(:user_id => user.id, :notification => "@#{@current_user.name} mention you in timeline ##{timeline.name} comment", :payload => payload.to_json)
+          Notification.create(:user_id => user.id, :notification => "@#{@current_user.name} mention you in timeline ##{@timeline.name} comment", :payload => payload.to_json)
         end
       end
       render :json => {:status_code => 200, :success => 'comment created successfully'}
@@ -194,8 +215,7 @@ class TimelineController < ApplicationController
   def fetch_comments
     begin
       result = []
-      timeline = Timeline.find_by_id(params[:id])
-      timeline.comments.includes(:user).each do |object|
+      @timeline.comments.includes(:user).each do |object|
         record = object.as_json
         record[:username] = object.user.name rescue ''
         user_id = object.user.id rescue ''
@@ -230,6 +250,16 @@ class TimelineController < ApplicationController
       participants.push(member)
     end
     participants
+  end
+
+  def set_timeline_instance
+    @timelines = []
+  end
+  # Added by insonix
+  def check_timeline_presence
+    @timeline = Timeline.find_by_id(params[:id])
+    render :json => {:status=>404,:message=>'Timeline not found'} and return if @timeline.blank?
+
   end
 
 end

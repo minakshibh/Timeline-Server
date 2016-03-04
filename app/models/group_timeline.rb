@@ -4,9 +4,6 @@ class GroupTimeline < ActiveRecord::Base
   belongs_to :user
   serialize :participants, Array
 
-  # acts_as_likeable
-  # acts_as_followable
-
   def self.public_or_own(current_user)
     if current_user
       joins(:user)

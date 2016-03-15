@@ -58,6 +58,9 @@ gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'delayed_paperclip'
 
+# handle delayed_job restart
+gem 'whenever', require: false
+
 # Health Check for AWS
 gem 'health_check'
 

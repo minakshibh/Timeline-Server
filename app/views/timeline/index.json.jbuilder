@@ -28,6 +28,7 @@ json.array! @timelines do |timeline|
       group_timeline.participants.each do |participant|
         group_participant.push(User.find_by_id(participant).as_json)
       end
+      json.user_id @current_user.id
       json.admin_id group_timeline.user_id
       json.admin_name group_timeline.user_name
       json.participants group_participant

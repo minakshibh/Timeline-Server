@@ -140,9 +140,9 @@ ActiveRecord::Schema.define(version: 20160303103331) do
     t.datetime "updated_at",                                  null: false
     t.integer  "likers_count",    limit: 4,   default: 0
     t.integer  "followers_count", limit: 4,   default: 0
-    t.integer  "comments_count",  limit: 4,   default: 0
     t.boolean  "group_timeline",              default: false
     t.string   "description",     limit: 255, default: ""
+    t.integer  "comments_count",  limit: 4,   default: 0
   end
 
   create_table "users", force: :cascade do |t|

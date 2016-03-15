@@ -1,10 +1,10 @@
 class TimelineController < ApplicationController
   #Added by insonix
   before_action :set_timeline_instance, :only => [:index, :me, :user, :following, :trending]
-  before_action :check_timeline_presence,:only => [:post_comment,:fetch_comments]
+  before_action :check_timeline_presence, :only => [:post_comment, :fetch_comments]
   skip_before_filter :authenticate_user_from_token!, :only => :webview
   skip_before_action :verify_authenticity_token, :only => [:post_comment, :fetch_comments]
-  before_action :set_timeline, :except => [:index, :me, :user, :create, :create_group_timeline, :destroy, :following, :trending, :unfollow, :block, :unblock, :all_followers, :webview, :blocked]
+  before_action :set_timeline, :except => [:index, :me, :user, :create, :destroy, :following, :trending, :unfollow, :block, :unblock, :all_followers, :webview, :blocked]
 
   # views
 
@@ -34,7 +34,7 @@ class TimelineController < ApplicationController
 
     ##----------------------------- Modified Code (By Insonix) --------------------------##
     Timeline.where(:user_id => @current_user.id).each { |timeline| @timelines.push(timeline) }
-    GroupTimeline.includes(:timeline).all.each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.gsub('-', '').eql?(@current_user.id.to_s.gsub('-', '')) } }
+    GroupTimeline.includes(:timeline).all.each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.eql?(@current_user.id.to_s) } }
     @timelines.sort_by! { |record| record.updated_at }.reverse!
     render :index
     ##-----------------------------------------------------------------------------------##
@@ -48,7 +48,7 @@ class TimelineController < ApplicationController
 
     ##----------------------------- Modified Code (By Insonix) --------------------------##
     Timeline.public_or_own(@current_user).where(:user_id => params[:user_id]).each { |timeline| @timelines.push(timeline) }
-    GroupTimeline.includes(:timeline).public_or_own(@current_user).each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.gsub('-', '').eql?(params[:user_id].to_s.gsub('-', '')) } }
+    GroupTimeline.includes(:timeline).public_or_own(@current_user).each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.eql?(params[:user_id].to_s) } }
     render :index
     ##-----------------------------------------------------------------------------------##
   end
@@ -66,7 +66,7 @@ class TimelineController < ApplicationController
 
     ##----------------------------- Modified Code (By Insonix) --------------------------##
     Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: {id: nil}).limit(25).each { |timeline| @timelines.push(timeline) }
-    GroupTimeline.includes(:timeline).public_or_own(@current_user).each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.gsub('-', '').eql?(@current_user.id.to_s.gsub('-', '')) } }
+    GroupTimeline.includes(:timeline).public_or_own(@current_user).each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.eql?(@current_user.id.to_s) } }
     @timelines.sort_by! { |record| [record.updated_at, record.likers_count, record.followers_count] }.reverse!
     render :index
     ##-----------------------------------------------------------------------------------##
@@ -170,14 +170,16 @@ class TimelineController < ApplicationController
   def create
     @timeline = Timeline.new(timeline_params)
     @timeline.user_id = @current_user.id
+    @timeline.group_timeline = set_timeline_type(params)
     # Modify by insonix
     participants = set_group_timeline_participants(params) if params[:group_timeline].to_s.eql?('1')
+    render :json => {:status_code => 404, :message => 'participant list can not be blank'} and return if participants.blank? && params[:group_timeline].to_s.eql?('1')
     if @timeline.save
       track_activity @timeline
-      @timeline.group_timelines.create(:participants => participants, :admin_id => @current_user.id, :admin_name => @current_user.name) if params[:group_timeline].to_s.eql?('1')
+      @timeline.group_timelines.create(:participants => participants, :user_id => @current_user.id, :user_name => @current_user.name) if params[:group_timeline].to_s.eql?('1')
       render :show
     else
-      render :json => {:error => @timeline.errors.full_messages}, :status => 400
+      render :json => {:error => @timeline.errors.full_messages}, :status => 400 and return
     end
   end
 
@@ -236,30 +238,34 @@ class TimelineController < ApplicationController
     params.permit(:name, :group_timeline, :description)
   end
 
-  def group_timeline_params
-    params.permit(params[:name], params[:description], params[:owner])
-  end
-
   def set_timeline
     @timeline = Timeline.public_or_own(@current_user).find params[:id]
   end
 
   def set_group_timeline_participants(params)
     participants = []
-    params[:participants].split(',').each do |member|
-      participants.push(member)
+    if params[:participants].blank?
+      nil
+    else
+      params[:participants].split(',').each do |member|
+        participants.push(member)
+      end
+      participants
     end
-    participants
   end
 
   def set_timeline_instance
     @timelines = []
   end
+
   # Added by insonix
   def check_timeline_presence
     @timeline = Timeline.find_by_id(params[:id])
-    render :json => {:status=>404,:message=>'Timeline not found'} and return if @timeline.blank?
+    render :json => {:status => 404, :message => 'Timeline not found'} and return if @timeline.blank?
+  end
 
+  def set_timeline_type(params)
+    params[:group_timeline].present? && params[:group_timeline].to_s.eql?('1') ? 1 : 0
   end
 
 end

@@ -55,7 +55,25 @@ Rails.application.routes.draw do
       get '/followers' => 'timeline#all_followers', defaults: {format: :json}
       get '/:id' => 'timeline#show', defaults: {format: :json}
       delete '/:id' => 'timeline#destroy'
+
     end
+
+    scope :group_timeline do
+      #--------------------- added by insonix --------------------------#
+      #-------------------------------------------------------------------#
+      delete '/:id/remove_group_participant/:participant_id' => 'group_timeline#remove_participant'
+      patch '/:id/add_remove_participant_by_admin/:participants' => 'group_timeline#add_remove_participant'
+      delete '/:id/destroy_group_timeline_by_admin' => 'group_timeline#destroy_group_timeline'
+      #-------------------------------------------------------------------#
+    end
+
+    scope :comment do
+      #--------------------- added by insonix ----------------------------#
+      patch '/:id/edit' => 'comment#edit'
+      delete '/:id/delete' => 'comment#delete'
+      #-------------------------------------------------------------------#
+    end
+
     scope '/video' do
       #--------------------- added by insonix --------------------------#
       get '/:id/comments' => 'video#fetch_comments'

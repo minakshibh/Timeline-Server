@@ -43,7 +43,7 @@ class GroupTimelineController < ApplicationController
   private
 
   def set_timeline
-    @timeline = Timeline.find_by_id(params[:id])
+    @timeline = Timeline.includes(:group_timelines).find_by_id(params[:id])
     render :json => {:status_code => 404, :message => 'Group Timeline not found'} and return if @timeline.nil?
   end
 

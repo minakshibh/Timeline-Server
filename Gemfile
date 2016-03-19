@@ -57,6 +57,8 @@ gem 'socialization'
 gem 'daemons'
 gem 'delayed_job_active_record'
 gem 'delayed_paperclip'
+# delayed job web interface
+gem 'delayed_job_web', '~> 1.2', '>= 1.2.10'
 
 # handle delayed_job restart
 gem 'whenever', require: false

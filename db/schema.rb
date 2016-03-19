@@ -157,6 +157,12 @@ ActiveRecord::Schema.define(version: 20160303103331) do
     t.integer  "allowed_timelines_count", limit: 4,   default: 2
     t.integer  "likers_count",            limit: 4,   default: 0
     t.integer  "followees_count",         limit: 4,   default: 0
+    t.string   "image",                   limit: 255
+    t.string   "bio",                     limit: 255
+    t.string   "firstname",               limit: 255
+    t.string   "lastname",                limit: 255
+    t.string   "website",                 limit: 255
+    t.string   "other",                   limit: 255
   end
 
   create_table "videos", force: :cascade do |t|

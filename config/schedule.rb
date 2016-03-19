@@ -4,18 +4,22 @@
 # http://en.wikipedia.org/wiki/Cron
 
 # Example:
+#/var/app/current
 #
-set :environment, "development"
-set :output, "/home/insonix/RubymineProjects/Timeline/log/cron_log.log"
+ set :output, "/var/app/current/log/cron_log.log"
 #
-every 1.minute do
-  # command "/usr/bin/some_great_command"
-  # runner "MyModel.some_method"
-  rake 'delay:delete_all_rows'
+ every 2.minutes do
+   command "/var/app/current/delsy.sh"
+   command "/var/app/current/passenger.sh"
+ end
+
+
+every :reboot do
+  command "/var/app/current/delsy.sh"
 end
-#
-# every 4.days do
-#   runner "AnotherModel.prune_old_records"
-# end
+
+every :day, :at => '5:00pm' do  # execute at 12PM (CST) every day
+ rake "delay:delete_all_rows"   
+end
 
 # Learn more: http://github.com/javan/whenever

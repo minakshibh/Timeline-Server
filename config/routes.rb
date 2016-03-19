@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  mount DelayedJobWeb => "/delayed_job"
   scope '/api' do
     scope '/user' do
       #--------------------- created by insonix --------------------------#

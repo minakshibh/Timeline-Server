@@ -13,9 +13,6 @@ class Activity < ActiveRecord::Base
     notification = nil
 
     if self.trackable_type == 'Timeline'
-      puts "=========tractable_obj=#{self.trackable}"
-      puts "=========user_obj=#{self.trackable.user}"
-
       external_id = self.trackable.user.external_id
       user_id = self.trackable.user.id
       user_query = {'__type' => 'Pointer', 'className' => '_User', 'objectId' => external_id}
@@ -30,8 +27,6 @@ class Activity < ActiveRecord::Base
         notification = "@#{self.user.name} wants to follow your timeline ##{self.trackable.name}."
         payload = {:timeline_id => self.trackable_id, :name => self.trackable.name, :action => self.action}
       elsif self.action == 'create'
-        puts "======i am here==================="
-        puts "=========self=#{self}==\n action=#{self.action}======\n user = #{self.user}"
         followers = User.select(:id, :external_id).where(id: Follow.select(:follower_id).where(followable_type: "User", follower_type: "User", followable_id: self.user.id))
         external_id = { '$in' => followers.map {|u| u.external_id }.to_a.flatten }
         notification = "@#{self.user.name} created timeline ##{self.trackable.name}."
@@ -43,11 +38,14 @@ class Activity < ActiveRecord::Base
       external_id = self.trackable.external_id
       user_id = self.trackable.id
       user_query = {'__type' => 'Pointer', 'className' => '_User', 'objectId' => external_id}
-
+      Delayed::Worker.logger.info "==========trackable_user=#{ self.trackable.name}"
       if self.action == 'like'
+        Delayed::Worker.logger.info "=like=====user_name=#{self.user.name}"
         notification = "@#{self.user.name} likes your profile."
         payload = {:user_id => self.user.id, :name => self.user.name, :external => self.user.external_id, :action => self.action}
       elsif self.action == 'follow'
+        Delayed::Worker.logger.info "=follow=====user_name=#{self.user.name}"
+
         notification = "@#{self.user.name} is now following you."
         payload = {:user_id => self.user.id, :name => self.user.name, :external => self.user.external_id, :action => self.action}
       elsif self.action == 'follow_request'
@@ -79,14 +77,18 @@ class Activity < ActiveRecord::Base
 
       http.start do |h|
         request = Net::HTTP::Post.new uri.request_uri
-        request['X-Parse-Application-Id'] = "LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS"
-        request['X-Parse-REST-API-Key'] = "ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58"
+        #request['X-Parse-Application-Id'] = "LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS"
+        #request['X-Parse-REST-API-Key'] = "ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58"
+
+        request['X-Parse-Application-Id'] = "Zlos4Gg3l7oIeyfekTgMNrA5ENWoHmyKGuRiM39C"
+        request['X-Parse-REST-API-Key'] = "0NZmxMSRfvytkLw05nXEcTpXSAgzP22KW5RpFmpY"
         request['Content-Type'] = "application/json"
 
         request.body = pushdata.to_json
         # puts request.body
-
+        Delayed::Worker.logger.info  "========pushdata=#{pushdata.inspect}=================================================="
         response = h.request request
+        Delayed::Worker.logger.info "========push response=#{response.inspect}=============================================="
         # puts response
       end
 

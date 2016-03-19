@@ -6,13 +6,13 @@ class User < ActiveRecord::Base
   has_many :blocks
   has_many :notifications
   has_many :comments
-  scope :notifications_before_current_timestamp, -> (user, time_stamp) { user.notifications.where('created_at < ?', time_stamp) }
-
+  scope :notifications_before_current_timestamp,-> (user,time_stamp) { user.notifications.where('created_at < ?',time_stamp)}
   acts_as_liker
   acts_as_likeable
   acts_as_follower
   acts_as_followable
   acts_as_mentionable
+
 
   after_destroy :delete_relations
 
@@ -52,15 +52,22 @@ class User < ActiveRecord::Base
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true if uri.scheme == 'https'
+
     response = nil
 
     http.start do |h|
       request = Net::HTTP::Get.new uri.request_uri
-      request['X-Parse-Application-Id'] = "LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS"
-      request['X-Parse-REST-API-Key'] = "ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58"
-      request['X-Parse-Session-Token'] = session_token
 
+      #request['X-Parse-Application-Id'] = "LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS"
+      #request['X-Parse-REST-API-Key'] = "ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58"
+
+      request['X-Parse-Application-Id'] = "Zlos4Gg3l7oIeyfekTgMNrA5ENWoHmyKGuRiM39C"
+      request['X-Parse-REST-API-Key'] = "0NZmxMSRfvytkLw05nXEcTpXSAgzP22KW5RpFmpY"
+      request['X-Parse-Session-Token'] = session_token
+      puts "===========response=#{session_token}"
       response = h.request request
+      puts "===========response=#{response.inspect}"
+
     end
 
     # Check if session is valid
@@ -79,27 +86,32 @@ class User < ActiveRecord::Base
     end
   end
 
-  # Add user_image by insonix
   def self.update_from_parse(objectId)
     # retrieve user from Parse
     uri = URI.parse("https://api.parse.com/1/users/" + objectId)
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = true if uri.scheme == 'https'
+
     response = nil
 
     http.start do |h|
       request = Net::HTTP::Get.new uri.request_uri
-      request['X-Parse-Application-Id'] = "LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS"
-      request['X-Parse-REST-API-Key'] = "ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58"
+      #request['X-Parse-Application-Id'] = "LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS"
+      #request['X-Parse-REST-API-Key'] = "ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58"
+
+      request['X-Parse-Application-Id'] = "Zlos4Gg3l7oIeyfekTgMNrA5ENWoHmyKGuRiM39C"
+      request['X-Parse-REST-API-Key'] = "0NZmxMSRfvytkLw05nXEcTpXSAgzP22KW5RpFmpY"
 
       response = h.request request
     end
 
     user = JSON.parse(response.body)
-
+    puts("\n\n =========  User inspect ==========  \n\n")
+    puts(user.inspect)
+    puts("\n\n =========  End OF user inspect ===========\n\n")
     user_profile_image = user['profile_picture']['url'] rescue ''
-#added new fields in
+
     user_profile_bio = user['bio'] rescue ''
     user_profile_firstname = user['firstname'] rescue ''
     user_profile_lastname = user['lastname'] rescue ''
@@ -109,9 +121,8 @@ class User < ActiveRecord::Base
     # update with current data from parse
     u_obj = User.find_by_external_id(objectId)
     Rails.logger.info "=======user_image=#{user_profile_image}"
-
+    #    u_obj.update_columns(email: user['email'], image: user_profile_image)
     u_obj.update_columns(email: user['email'], image: user_profile_image, bio: user_profile_bio, firstname: user_profile_firstname, lastname: user_profile_lastname ,website: user_profile_website, other: user_profile_other)
-    #u_obj.update_columns(email: user['email'], image: user_profile_image, bio:user_profile_bio, )
 
     u_obj
   end
@@ -127,8 +138,12 @@ class User < ActiveRecord::Base
 
     http.start do |h|
       request = Net::HTTP::Get.new uri.request_uri
-      request['X-Parse-Application-Id'] = "LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS"
-      request['X-Parse-REST-API-Key'] = "ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58"
+
+      #request['X-Parse-Application-Id'] = "LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS"
+      #request['X-Parse-REST-API-Key'] = "ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58"
+
+      request['X-Parse-Application-Id'] = "Zlos4Gg3l7oIeyfekTgMNrA5ENWoHmyKGuRiM39C"
+      request['X-Parse-REST-API-Key'] = "0NZmxMSRfvytkLw05nXEcTpXSAgzP22KW5RpFmpY"
 
       response = h.request request
     end

@@ -17,7 +17,10 @@ class User < ActiveRecord::Base
   after_destroy :delete_relations
 
   def self.search(search)
-    where('users.name LIKE ?', "%#{search}%")
+    # Previous query
+    # where('users.name LIKE ?', "%#{search}%")
+    # New query added by Insonix
+    where('users.name LIKE ? || users.firstname LIKE ? || users.lastname LIKE ?', "%#{search}%","%#{search}%","%#{search}%")
   end
 
   def follow_status(object)

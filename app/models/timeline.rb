@@ -1,3 +1,5 @@
+include App::NotificationService
+
 class Timeline < ActiveRecord::Base
   include ActiveUUID::UUID
 
@@ -18,7 +20,7 @@ class Timeline < ActiveRecord::Base
     if current_user
       joins(:user)
           .where("users.timelines_public = true OR timelines.user_id = ? OR timelines.user_id IN (?)",
-                         current_user.id, Follow.users(current_user))
+                 current_user.id, Follow.users(current_user))
           .where("timelines.id NOT IN (?) AND timelines.user_id NOT IN (?)",
                  Block.select(:blockable_id).where(:blockable_type => 'Timeline', :user => current_user),
                  Block.select(:blockable_id).where(:blockable_type => 'User', :user => current_user))
@@ -38,6 +40,18 @@ class Timeline < ActiveRecord::Base
   def self.blocked(current_user)
     where("timelines.id IN (?)", Block.select(:blockable_id).where(:blockable_type => 'Timeline', :user => current_user))
   end
+
+  def self.tagging(current_user, tag_users, timeline, comment)
+    tagging_user_ids = []
+    payload = {}
+    tag_users.split(',').each { |tag_user_id| tagging_user_ids.push(tag_user_id) }
+    users = User.where(:id => tagging_user_ids)
+    users.each { |user| comment.mention!(user) }
+    payload.merge!({:timeline_id => timeline.id, :name => timeline.name,:action=>'tagging'})
+    # send tagging push notification by parse
+    tagging_users_push("@#{current_user.name} mention you in feedeo ##{timeline.name} comment", users, payload)
+  end
+
 
   protected
 

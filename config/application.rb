@@ -38,6 +38,7 @@ module TimelineServer
     config.active_job.queue_adapter = :delayed_job
 
     # Allow loading modules from /lib/ directory
-    config.autoload_paths += Dir["#{config.root}/lib/**/"]
+    # config.autoload_paths << Rails.root.join('lib')
+    config.autoload_paths += Dir["#{Rails.root}/lib/**/"]
   end
 end

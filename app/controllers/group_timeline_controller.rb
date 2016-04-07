@@ -8,7 +8,7 @@ class GroupTimelineController < ApplicationController
       if admin_authorization?
         participant_add_delete_by_admin
       else
-        render :json => {:status_code => 401, :message => 'you are not admin of this timeline'}
+        render :json => {:status_code => 401, :message => 'you are not admin of this feedeo'}
       end
     rescue Exception => error
       render :json => {:status_code => 471, :message => error.message}
@@ -31,9 +31,9 @@ class GroupTimelineController < ApplicationController
     begin
       if admin_authorization?
         @timeline.destroy
-        render :json => {:status_code => 200, :message => 'Group Timeline deleted successfully'} and return
+        render :json => {:status_code => 200, :message => 'Group feedeo deleted successfully'} and return
       else
-        render :json => {:status_code => 401, :message => 'you are not admin of this timeline'} and return
+        render :json => {:status_code => 401, :message => 'you are not admin of this feedeo'} and return
       end
     rescue Exception => error
       render :json => {:status_code => 404, :message => error.message}
@@ -44,7 +44,7 @@ class GroupTimelineController < ApplicationController
 
   def set_timeline
     @timeline = Timeline.includes(:group_timelines).find_by_id(params[:id])
-    render :json => {:status_code => 404, :message => 'Group Timeline not found'} and return if @timeline.nil?
+    render :json => {:status_code => 404, :message => 'Group feedeo not found'} and return if @timeline.nil?
   end
 
   def admin_authorization?

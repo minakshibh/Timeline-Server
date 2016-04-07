@@ -12,7 +12,6 @@ class SearchController < ApplicationController
       timelines = Timeline.public_or_own(@current_user).search(params[:q]).limit(20)
       @results = users + timelines
     end
-
     render :json => @results.to_json, :status => 200
   end
 

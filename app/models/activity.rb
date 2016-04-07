@@ -13,23 +13,24 @@ class Activity < ActiveRecord::Base
     notification = nil
 
     if self.trackable_type == 'Timeline'
+
       external_id = self.trackable.user.external_id
       user_id = self.trackable.user.id
       user_query = {'__type' => 'Pointer', 'className' => '_User', 'objectId' => external_id}
 
       if self.action == 'like'
-        notification = "@#{self.user.name} likes your timeline ##{self.trackable.name}."
+        notification = "@#{self.user.name} likes your feedeo ##{self.trackable.name}."
         payload = {:timeline_id => self.trackable_id, :name => self.trackable.name, :action => self.action}
       elsif self.action == 'follow'
-        notification = "@#{self.user.name} is now following your timeline ##{self.trackable.name}."
+        notification = "@#{self.user.name} is now following your feedeo ##{self.trackable.name}."
         payload = {:timeline_id => self.trackable_id, :name => self.trackable.name, :action => self.action}
       elsif self.action == 'follow_request'
-        notification = "@#{self.user.name} wants to follow your timeline ##{self.trackable.name}."
+        notification = "@#{self.user.name} wants to follow your feedeo ##{self.trackable.name}."
         payload = {:timeline_id => self.trackable_id, :name => self.trackable.name, :action => self.action}
       elsif self.action == 'create'
         followers = User.select(:id, :external_id).where(id: Follow.select(:follower_id).where(followable_type: "User", follower_type: "User", followable_id: self.user.id))
         external_id = { '$in' => followers.map {|u| u.external_id }.to_a.flatten }
-        notification = "@#{self.user.name} created timeline ##{self.trackable.name}."
+        notification = "@#{self.user.name} created feedeo ##{self.trackable.name}."
         payload = {:timeline_id => self.trackable_id, :name => self.trackable.name, :action => self.action}
         user_query = {'$inQuery' => {'where' => {'objectId' => external_id}, 'className' => '_User'}}
       end
@@ -38,8 +39,8 @@ class Activity < ActiveRecord::Base
       external_id = self.trackable.external_id
       user_id = self.trackable.id
       user_query = {'__type' => 'Pointer', 'className' => '_User', 'objectId' => external_id}
-      Delayed::Worker.logger.info "==========trackable_user=#{ self.trackable.name}"
       if self.action == 'like'
+        Delayed::Worker.logger.info "==========trackable_user=#{ self.trackable.name}"
         Delayed::Worker.logger.info "=like=====user_name=#{self.user.name}"
         notification = "@#{self.user.name} likes your profile."
         payload = {:user_id => self.user.id, :name => self.user.name, :external => self.user.external_id, :action => self.action}

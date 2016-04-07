@@ -8,7 +8,7 @@
 #
  set :output, "/var/app/current/log/cron_log.log"
 #
- every 2.minutes do
+ every 1.minute do
    command "/var/app/current/delsy.sh"
    command "/var/app/current/passenger.sh"
  end

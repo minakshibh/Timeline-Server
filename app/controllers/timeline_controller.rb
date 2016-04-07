@@ -5,7 +5,6 @@ class TimelineController < ApplicationController
   skip_before_filter :authenticate_user_from_token!, :only => :webview
   skip_before_action :verify_authenticity_token, :only => [:post_comment, :fetch_comments]
   before_action :set_timeline, :except => [:index, :me, :user, :create, :destroy, :following, :trending, :unfollow, :block, :unblock, :all_followers, :webview, :blocked]
-
   # views
 
   def index
@@ -195,22 +194,11 @@ class TimelineController < ApplicationController
 
   # Added by insonix
   def post_comment
-    begin
-      user_profile_image = @current_user.parse_profile_image rescue ''
-      comment = @timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => @current_user.id, :user_image => user_profile_image)
-      if params[:tag_users].present?
-        params[:tag_users].split(',').each do |tag_user_id|
-          user = User.find_by_id(tag_user_id)
-          payload = {:user_id => user.id, :timeline_id => @timeline.id, :name => @timeline.name}
-          comment.mention!(user)
-          # Create Notification
-          Notification.create(:user_id => user.id, :notification => "@#{@current_user.name} mention you in timeline ##{@timeline.name} comment", :payload => payload.to_json)
-        end
-      end
-      render :json => {:status_code => 200, :success => 'comment created successfully'}
-    rescue ActiveRecord::ActiveRecordError, Exception => error
-      render :json => {:status_code => 417, :error => error.message}
-    end
+    comment = @timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => @current_user.id, :user_image => @current_user.image)
+    Timeline.tagging(@current_user, params[:tag_users], @timeline, comment) if params[:tag_users].present?
+    render :json => {:status_code => 200, :success => 'comment created successfully'}
+  rescue Exception => error
+    render :json => {:status_code => 417, :error => error.message}
   end
 
   # Added by insonix
@@ -261,11 +249,12 @@ class TimelineController < ApplicationController
   # Added by insonix
   def check_timeline_presence
     @timeline = Timeline.find_by_id(params[:id])
-    render :json => {:status => 404, :message => 'Timeline not found'} and return if @timeline.blank?
+    render :json => {:status => 404, :message => 'Feedeo not found'} and return if @timeline.blank?
   end
 
   def set_timeline_type(params)
     params[:group_timeline].present? && params[:group_timeline].to_s.eql?('1') ? 1 : 0
   end
+
 
 end

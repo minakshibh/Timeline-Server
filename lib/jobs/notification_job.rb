@@ -2,15 +2,8 @@ require 'erubis'
 module Jobs
   class NotificationJob < Struct.new(:notification, :users, :payload)
 
-    def enqueue
-    end
-
     def perform
       send_push_per_user(notification, users, payload)
-    end
-
-    def queue_name
-      'custom__notification_queue'
     end
 
     private
@@ -21,7 +14,7 @@ module Jobs
       push_data = {:where => {:user => user_query},
                    :data => {:alert => notification, :badge => 'Increment', :sound => 'default', 'content-available' => 1, :payload => payload}}
       send_parse_push(push_data)
-      users.each { |user| Notification.create(:user_id => user.id, :notification => notification, :payload => payload.merge!(:user_id=>user.id).to_json) }
+      users.each { |user| Notification.create(:user_id => user.id, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
     end
 
     def send_parse_push(push_data)

@@ -177,7 +177,7 @@ class UserController < ApplicationController
   def my_followers
     begin
       followers = @current_user.followers_relation(User)
-      render :json => {:status_code => 200,:followers_count=>followers.count, :result => followers}
+      render :json => {:status_code => 200, :followers_count => followers.count, :result => followers}
     rescue Exception => error
       render :json => {:status_code => 417, :error => error.message}
     end
@@ -204,28 +204,14 @@ class UserController < ApplicationController
 
   # This is new notification API
   def timeline_notifications
-    begin
-      result = []
-      page_id = params[:page_id].to_i
-      time_stamp = DateTime.parse(params[:date]).to_s(:db)
-      notifications = User.notifications_before_current_timestamp(@current_user, time_stamp)
-      notifications_count = notifications.count
-      notifications = notifications.limit(30).offset(page_id)
-      notifications.each do |user_notification|
-        user_notification = user_notification.as_json
-        username = user_notification['notification'].to_s.split(' ')[0].gsub('@', '')
-        user = User.find_by_name(username)
-        user_notification['username'] = user.name rescue ''
-        user_notification['first_name'] = user.firstname rescue ''
-        user_notification['last_name'] = user.lastname rescue ''
-        user_notification['username_id'] = user.id rescue ''
-        user_notification['user_image'] = user.image rescue ''
-        result.push(user_notification)
-      end
-      render :json => {:result => result, :status_code => 200, :page_id => (notifications_count - (page_id+30)) > 0 ? page_id+30 : nil}
-    rescue ActiveRecord::ActiveRecordError, Exception => error
-      render :json => {:error => error.message, :status_code => 417}
-    end
+    page_id = params[:page_id].to_i
+    time_stamp = DateTime.parse(params[:date]).to_s(:db)
+    notifications = User.notifications_before_current_timestamp(@current_user, time_stamp)
+    notifications_count = notifications.count
+    result = @current_user.notifications_processing(notifications.limit(30).offset(page_id))
+    render :json => {:result => result, :status_code => 200, :page_id => (notifications_count - (page_id+30)) > 0 ? page_id+30 : nil}
+  rescue ActiveRecord::ActiveRecordError, Exception => error
+    render :json => {:error => error.message, :status_code => 417}
   end
 
   private
@@ -237,4 +223,5 @@ class UserController < ApplicationController
   def set_user
     @user = User.find params[:id]
   end
+
 end

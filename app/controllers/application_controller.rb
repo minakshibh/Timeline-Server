@@ -18,6 +18,8 @@ class ApplicationController < ActionController::Base
   protected
 
   def authenticate_user_from_token!
+    # puts "=====request_token========#{request.headers['X-Timeline-Authentication']}"
+    # puts "=========here=#{::JsonWebToken.decode(request.headers['X-Timeline-Authentication'].split(' ').last)}"
     if claims and user = User.find_by(external_id: claims[0]['user_id'])
       @current_user = user
     else

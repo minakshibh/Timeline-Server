@@ -25,11 +25,8 @@ module Jobs
 
       http.start do |h|
         request = Net::HTTP::Post.new uri.request_uri
-        #request['X-Parse-Application-Id'] = "LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS"
-        #request['X-Parse-REST-API-Key'] = "ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58"
-
-        request['X-Parse-Application-Id'] = "Zlos4Gg3l7oIeyfekTgMNrA5ENWoHmyKGuRiM39C"
-        request['X-Parse-REST-API-Key'] = "0NZmxMSRfvytkLw05nXEcTpXSAgzP22KW5RpFmpY"
+        request['X-Parse-Application-Id'] = PARSE_CONFIG['PARSE_APP_ID']
+        request['X-Parse-REST-API-Key'] = PARSE_CONFIG['PARSE_API_KEY']
         request['Content-Type'] = "application/json"
 
         request.body = push_data.to_json

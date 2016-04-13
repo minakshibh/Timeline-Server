@@ -51,6 +51,9 @@ Rails.application.configure do
       :s3_host_alias => 'timeline-assets.reebayinc.netdna-cdn.com'
   }
 
+  # Parse Config
+  PARSE_CONFIG = YAML.load_file("#{::Rails.root}/config/parse.yml")[::Rails.env]
+
   # Add Bullet for performance testing
   config.after_initialize do
     Bullet.enable = true

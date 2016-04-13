@@ -77,6 +77,9 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Parse Config
+  PARSE_CONFIG = YAML.load_file("#{::Rails.root}/config/parse.yml")[::Rails.env]
+
   # Add configuration for Attachments via Paperclip
   config.paperclip_defaults = {
       :storage => :s3,

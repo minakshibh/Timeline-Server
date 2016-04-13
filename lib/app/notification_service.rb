@@ -4,9 +4,8 @@ module App
       Delayed::Job.enqueue(Jobs::NotificationJob.new(notification, users, payload), {:queue => 'custom_notification_queue', :priority => nil, :run_at => 5.seconds.from_now})
     end
 
-    def adding_moment_push(notification, users, payload)
+    def tagging_users_push(notification, users, payload)
       Delayed::Job.enqueue(Jobs::NotificationJob.new(notification, users, payload), {:queue => 'custom_notification_queue', :priority => nil, :run_at => 5.seconds.from_now})
     end
-
   end
 end

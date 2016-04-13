@@ -15,7 +15,7 @@ class TimelineController < ApplicationController
     ##----------------------------- Modified Code (By Insonix) --------------------------##
     Timeline.public_or_own(@current_user).limit(25).each { |timeline| @timelines.push(timeline) }
     GroupTimeline.includes(:timeline).public_or_own(@current_user).limit(25).each { |group_timeline| @timelines.push(group_timeline.timeline) }
-    @timelines.sort_by! { |record| record.updated_at }.reverse!
+    @timelines.compact.sort_by! { |record| record.updated_at }.reverse!
     ##-----------------------------------------------------------------------------------##
   end
 
@@ -34,7 +34,7 @@ class TimelineController < ApplicationController
     ##----------------------------- Modified Code (By Insonix) --------------------------##
     Timeline.where(:user_id => @current_user.id).each { |timeline| @timelines.push(timeline) }
     GroupTimeline.includes(:timeline).all.each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.eql?(@current_user.id.to_s) } }
-    @timelines.sort_by! { |record| record.updated_at }.reverse!
+    @timelines.compact.sort_by! { |record| record.updated_at }.reverse!
     render :index
     ##-----------------------------------------------------------------------------------##
   end
@@ -66,7 +66,7 @@ class TimelineController < ApplicationController
     ##----------------------------- Modified Code (By Insonix) --------------------------##
     Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: {id: nil}).limit(25).each { |timeline| @timelines.push(timeline) }
     GroupTimeline.includes(:timeline).public_or_own(@current_user).each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.eql?(@current_user.id.to_s) } }
-    @timelines.sort_by! { |record| [record.updated_at, record.likers_count, record.followers_count] }.reverse!
+    @timelines.compact.sort_by! { |record| [record.updated_at, record.likers_count, record.followers_count] }.reverse!
     render :index
     ##-----------------------------------------------------------------------------------##
   end
@@ -207,11 +207,13 @@ class TimelineController < ApplicationController
       result = []
       @timeline.comments.includes(:user).each do |object|
         record = object.as_json
+        # record.merge!(:username=>object_attribute(object.user,'name'))
         record[:username] = object.user.name rescue ''
         user_id = object.user.id rescue ''
         external_id = object.user.external_id rescue ''
         name = object.user.name rescue ''
         record[:payload] = {'user_id' => user_id, 'external' => external_id, 'name' => name}.to_json.to_s
+        record.merge!(:payload=>{'user_id' => object_attribute(object.user,'id'), 'external' => object_attribute(object.user,'external_id'), 'name' => object_attribute(object.user,'name')}.to_json.to_s)
         result.push(record)
       end
       render :json => {:status_code => 200, :comments_count => result.count, :result => result}
@@ -254,6 +256,10 @@ class TimelineController < ApplicationController
 
   def set_timeline_type(params)
     params[:group_timeline].present? && params[:group_timeline].to_s.eql?('1') ? 1 : 0
+  end
+
+  def object_attribute(user, attribute)
+    user.send(attribute) rescue ''
   end
 
 

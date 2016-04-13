@@ -1,0 +1,15 @@
+development:
+  # Live Parse credentials
+#  PARSE_APP_ID : 'LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS'
+#  PARSE_API_KEY : 'ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58'
+  # Test parse credentials
+  PARSE_APP_ID : 'Zlos4Gg3l7oIeyfekTgMNrA5ENWoHmyKGuRiM39C'
+  PARSE_API_KEY : '0NZmxMSRfvytkLw05nXEcTpXSAgzP22KW5RpFmpY'
+
+production:
+  # Live parse credentials
+#  PARSE_APP_ID : 'LiynFqjSP5wmP8QfzLQLgm8tGStY3Jt5FeH34lhS'
+#  PARSE_API_KEY : 'ZzxcBVYpinitFMF5k7JXmfDLXoBPArNtVFo0ZD58'
+  # Test parse credentials
+  PARSE_APP_ID : Zlos4Gg3l7oIeyfekTgMNrA5ENWoHmyKGuRiM39C
+  PARSE_API_KEY : 0NZmxMSRfvytkLw05nXEcTpXSAgzP22KW5RpFmpY

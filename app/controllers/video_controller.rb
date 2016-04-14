@@ -28,21 +28,15 @@ class VideoController < ApplicationController
 
   # Added by insonix
   def fetch_comments
-    begin
-      result = []
-      @video.comments.includes(:user).each do |object|
-        record = object.as_json
-        record[:username] = object.user.name rescue ''
-        user_id = object.user.id rescue ''
-        external_id = object.user.external_id rescue ''
-        name = object.user.name rescue ''
-        record[:payload] = {'user_id' => user_id, 'external' => external_id, 'name' => name}.to_json.to_s
-        result.push(record)
-      end
-      render :json => {:status_code => 200, :comments_count => result.count, :result => result}
-    rescue ActiveRecord::ActiveRecordError, Exception => error
-      render :json => {:status_code => 417, :error => error.message}
+    result = []
+    @video.comments.includes(:user).each do |object|
+      record = object.as_json
+      record.merge!(:username => object_attribute(object.user, 'name'), :payload => {'user_id' => object_attribute(object.user, 'id'), 'external' => object_attribute(object.user, 'external_id'), 'name' => object_attribute(object.user, 'name')}.to_json.to_s)
+      result.push(record)
     end
+    render :json => {:status_code => 200, :comments_count => result.count, :result => result}
+  rescue ActiveRecord::ActiveRecordError, Exception => error
+    render :json => {:status_code => 417, :error => error.message}
   end
 
 
@@ -56,6 +50,11 @@ class VideoController < ApplicationController
   def check_video_presence
     @video = Video.find_by_id(params[:id])
     render :json => {:status => 404, :message => 'Moment not found'} and return if @video.blank?
+  end
+
+  # Added by insonix
+  def object_attribute(user, attribute)
+    user.send(attribute) rescue ''
   end
 
 end

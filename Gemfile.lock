@@ -129,7 +129,6 @@ GEM
     parse-ruby-client (0.3.0)
       faraday
       faraday_middleware
-    pg (0.18.4)
     rack (1.6.4)
     rack-protection (1.5.3)
       rack
@@ -233,7 +232,6 @@ DEPENDENCIES
   paperclip
   paperclip-av-transcoder
   parse-ruby-client
-  pg
   rails (= 4.2.3)
   redis
   sass-rails (~> 5.0)

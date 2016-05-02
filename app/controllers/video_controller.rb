@@ -20,10 +20,12 @@ class VideoController < ApplicationController
   # Added by insonix
   def post_comment
     comment = @video.comments.create(:title => params[:title], :comment => params[:comment], :user_id => @current_user.id, :user_image => @current_user.image)
-    Video.tagging(@current_user, params[:tag_users], @video, comment) if params[:tag_users].present?
-    render :json => {:status_code => 200, :success => 'comment created successfully'}
-  rescue ActiveRecord::ActiveRecordError, Exception => error
-    render :json => {:status_code => 417, :error => error.message}
+    if comment.valid?
+      Video.tagging(@current_user, params[:tag_users], @video, comment) if params[:tag_users].present?
+      render :json => {:status_code => 200, :success => 'comment created successfully'}
+    else
+      render :json => {:status_code => 422, :error => comment.errors.full_messages.to_sentence}
+    end
   end
 
   # Added by insonix

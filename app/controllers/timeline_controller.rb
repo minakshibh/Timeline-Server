@@ -195,10 +195,12 @@ class TimelineController < ApplicationController
   # Added by insonix
   def post_comment
     comment = @timeline.comments.create(:title => params[:title], :comment => params[:comment], :user_id => @current_user.id, :user_image => @current_user.image)
-    Timeline.tagging(@current_user, params[:tag_users], @timeline, comment) if params[:tag_users].present?
-    render :json => {:status_code => 200, :success => 'comment created successfully'}
-  rescue Exception => error
-    render :json => {:status_code => 417, :error => error.message}
+    if comment.valid?
+      Timeline.tagging(@current_user, params[:tag_users], @timeline, comment) if params[:tag_users].present?
+      render :json => {:status_code => 200, :success => 'comment created successfully'}
+    else
+      render :json => {:status_code => 422, :error => comment.errors.full_messages.to_sentence}
+    end
   end
 
   # Added by insonix

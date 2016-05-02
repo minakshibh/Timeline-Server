@@ -18,8 +18,6 @@ class ApplicationController < ActionController::Base
   protected
 
   def authenticate_user_from_token!
-    # puts "=====request_token========#{request.headers['X-Timeline-Authentication']}"
-    # puts "=========here=#{::JsonWebToken.decode(request.headers['X-Timeline-Authentication'].split(' ').last)}"
     if claims and user = User.find_by(external_id: claims[0]['user_id'])
       @current_user = user
     else
@@ -38,18 +36,5 @@ class ApplicationController < ActionController::Base
   def jwt_token user
     JsonWebToken.encode('user_id' => user.external_id, 'username' => user.name)
   end
-
-  #------------------------ Code to resolve cross domain problem and no access control ----------------------#
-  #---------------------------------- Start Code Sniped ----------------------------------------------------#
-  def add_allow_credentials_headers
-    response.headers['Access-Control-Allow-Origin'] = request.headers['Origin'] || '*'
-    response.headers['Access-Control-Allow-Credentials'] = 'true'
-  end
-
-  def options
-    head :status => 200, :'Access-Control-Allow-Headers' => 'accept, content-type'
-  end
-  #---------------------------------- End Code Sniped ----------------------------------------------------#
-
 
 end

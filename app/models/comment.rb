@@ -1,6 +1,7 @@
 class Comment < ActiveRecord::Base
   include ActiveUUID::UUID
   include ActsAsCommentable::Comment
+  include TaggingNotifications
   # Added by insonix
   belongs_to :commentable, :polymorphic => true,:counter_cache => true
   acts_as_mentioner

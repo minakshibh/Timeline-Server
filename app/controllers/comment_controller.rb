@@ -4,8 +4,13 @@ class CommentController < ApplicationController
 
   def edit
     if user_authorization?
-      @comment.update_column('comment', params[:comment])
-      render :json => {:status_code => 200, :message => 'Comment edited successfully'}
+      validation_status = @comment.update(:comment => params[:comment])
+      if validation_status
+        Comment.tagging(@current_user, params[:tag_users], @comment.commentable, @comment) if params[:tag_users].present?
+        render :json => {:status_code => 200, :message => 'Comment edited successfully'}
+      else
+        render :json => {:status_code => 422, :message => "#{@comment.errors.full_messages.to_sentence}"}
+      end
     else
       render :json => {:status_code => 401, :message => 'You are not authorized'}
     end
@@ -32,8 +37,6 @@ class CommentController < ApplicationController
   end
 
   def user_authorization?
-    puts "====current_user=#{@current_user.id.to_s}===\n==user_id=#{@comment.user_id.to_s}"
-    puts "======inside user authorization==#{@current_user.id.to_s.eql?(@comment.user_id.to_s)}===="
     @current_user.id.to_s.eql?(@comment.user_id.to_s) ? true : false
   end
 

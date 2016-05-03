@@ -1,6 +1,8 @@
 include App::NotificationService
 class Video < ActiveRecord::Base
   include ActiveUUID::UUID
+  include TaggingNotifications
+
   # added by insonix
   acts_as_commentable
   belongs_to :timeline
@@ -35,16 +37,16 @@ class Video < ActiveRecord::Base
     )
   end
 
-  def self.tagging(current_user, tag_users, video, comment)
-    tagging_user_ids = []
-    payload = {}
-    tag_users.split(',').each { |tag_user_id| tagging_user_ids.push(tag_user_id) }
-    users = User.where(:id => tagging_user_ids)
-    users.each { |user| comment.mention!(user) }
-    payload.merge!(:video_id => video.id,:timeline_id=>video.timeline_id,:action=>'tagging')
-    # send tagging push notification by parse
-    tagging_users_push("@#{current_user.name} mention you in moment ##{video.timeline.name} comment", users, payload)
-  end
+  # def self.tagging(current_user, tag_users, video, comment)
+  #   tagging_user_ids = []
+  #   payload = {}
+  #   tag_users.split(',').each { |tag_user_id| tagging_user_ids.push(tag_user_id) }
+  #   users = User.where(:id => tagging_user_ids)
+  #   users.each { |user| comment.mention!(user) }
+  #   payload.merge!(:video_id => video.id,:timeline_id=>video.timeline_id,:action=>'tagging')
+  #   # send tagging push notification by parse
+  #   tagging_users_push("@#{current_user.name} mention you in moment ##{video.timeline.name} comment", users, payload)
+  # end
 
   def self.group_alert(current_user,video)
     payload = {}

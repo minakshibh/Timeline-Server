@@ -19,7 +19,7 @@ production:
   charset: utf8
   collation: utf8_unicode_ci
   database: ebdb
-  username: rootgit
+  username: root
   password: root
   host: 54.173.66.114
   port: 8889

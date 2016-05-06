@@ -39,6 +39,8 @@ module TimelineServer
 
     # Allow loading modules from /lib/ directory
     # config.autoload_paths << Rails.root.join('lib')
-    config.autoload_paths += Dir["#{Rails.root}/lib/**/"]
+    # config.autoload_paths += %W(#{config.root}/lib)
+    config.eager_load_paths += %W(#{config.root}/lib)
+
   end
 end

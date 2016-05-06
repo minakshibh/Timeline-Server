@@ -1,4 +1,3 @@
-include App::NotificationService
 class Video < ActiveRecord::Base
   include ActiveUUID::UUID
   include TaggingNotifications
@@ -48,13 +47,13 @@ class Video < ActiveRecord::Base
   #   tagging_users_push("@#{current_user.name} mention you in moment ##{video.timeline.name} comment", users, payload)
   # end
 
-  def self.group_alert(current_user,video)
-    payload = {}
-    users = User.where(:id => video.timeline.group_timelines.first.participants.push(video.timeline.user.id))
-    payload.merge!({:video_id => video.id, :timeline_id => video.timeline_id,:action=>'group_alert' })
-    # send moment push notification by parse
-    adding_moment_push("@#{current_user.name} added a moment in feedeo ##{video.timeline.name}", users, payload)
-  end
+  # def self.group_alert(current_user,video)
+  #   payload = {}
+  #   users = User.where(:id => video.timeline.group_timelines.first.participants.push(video.timeline.user.id))
+  #   payload.merge!({:video_id => video.id, :timeline_id => video.timeline_id,:action=>'group_alert' })
+  #   # send moment push notification by parse
+  #   adding_moment_push("@#{current_user.name} added a moment in feedeo ##{video.timeline.name}", users, payload)
+  # end
 
 
   def update_timeline

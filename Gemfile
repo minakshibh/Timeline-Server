@@ -15,6 +15,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 
 
+
 # Replace default webrick server by thin
 #gem 'thin'
 # Use ActiveModel has_secure_password

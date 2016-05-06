@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+set -e
+
+export rvmsudo_secure_path=1
+export PATH=$PATH:$HOME/.rvm/bin
+source $HOME/.rvm/scripts/rvm
+
+
+[ -x deploy/after_push ] && deploy/after_push $oldrev $newrev 2>&1 | tee -a $logfile
+
+RAILS_ENV=production bundle exec rake db:create
+RAILS_ENV=production bundle exec rake db:migrate
+RAILS_ENV=production bundle exec rake db:seed
+RAILS_ENV=production bundle exec rake assets:precompile
+
+deploy/restart

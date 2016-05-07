@@ -84,9 +84,9 @@ Rails.application.configure do
   config.paperclip_defaults = {
       :storage => :s3,
       :s3_credentials => {
-          :bucket => ENV['S3_STORAGE_BUCKET_NAME'],
-          :access_key_id => ENV['AWS_ACCESS_KEY_ID'],
-          :secret_access_key => ENV['AWS_SECRET_ACCESS_KEY']
+          :bucket => 'timeline-assets',
+          :access_key_id => 'AKIAJYOXXJHOU3HB76GQ',
+          :secret_access_key => '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'
       },
       :s3_host_name => "s3-us-west-2.amazonaws.com",
       :url => ':s3_alias_url',

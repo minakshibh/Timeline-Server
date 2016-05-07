@@ -55,9 +55,9 @@ Rails.application.configure do
   PARSE_CONFIG = YAML.load_file("#{::Rails.root}/config/parse.yml")[::Rails.env]
 
   # Add Bullet for performance testing
-  config.after_initialize do
-    Bullet.enable = true
-    Bullet.bullet_logger = true
-    Bullet.console = true
-  end
+  # config.after_initialize do
+  #   Bullet.enable = true
+  #   Bullet.bullet_logger = true
+  #   Bullet.console = true
+  # end
 end

@@ -129,6 +129,7 @@ GEM
       faraday
       faraday_middleware
     rack (1.6.4)
+    rack-cors (0.4.0)
     rack-protection (1.5.3)
       rack
     rack-test (0.6.3)
@@ -227,6 +228,7 @@ DEPENDENCIES
   paperclip
   paperclip-av-transcoder
   parse-ruby-client
+  rack-cors
   rails (= 4.2.3)
   redis
   sass-rails (~> 5.0)

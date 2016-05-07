@@ -21,7 +21,7 @@ production:
   database: ebdb
   username: root
   password: root
-  host: 54.173.66.114
+  host: localhost
   port: 8889
 
 

@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.3.0'
+ruby '2.2.4'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
 # Use mysql as the database for Active Record
@@ -41,6 +41,8 @@ gem 'aws-sdk', '~> 2'
 # Redis
 gem 'redis'
 
+
+
 # Parse
 gem 'parse-ruby-client'
 
@@ -48,6 +50,8 @@ gem 'parse-ruby-client'
 gem 'paperclip'
 gem 'av'
 gem 'paperclip-av-transcoder'
+#gem 'cocaine','0.5.3'
+# gem 'paperclip-ffmpeg'
 
 # Pagination
 gem 'kaminari'

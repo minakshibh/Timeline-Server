@@ -1,5 +1,5 @@
 class VideoController < ApplicationController
-  skip_before_action :verify_authenticity_token, :only => [:post_comment, :fetch_comments]
+  skip_before_action :verify_authenticity_token, :only => [:post_comment, :fetch_comments,:create]
   before_action :check_video_presence, :only => [:post_comment, :fetch_comments, :show]
 
   def show
@@ -11,7 +11,7 @@ class VideoController < ApplicationController
     if @video.save
       Video.group_alert(@current_user, @video) if @video.timeline.group_timeline
       track_activity @video
-      render :json => @video, :status => 200
+      render :json => @video, :status => 200 and return
     else
       render :json => {:error => @video.errors.full_messages}, :status => 400
     end

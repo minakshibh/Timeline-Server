@@ -57,6 +57,6 @@ class Video < ActiveRecord::Base
 
 
   def update_timeline
-    self.timeline.touch
+   self.timeline.touch
   end
 end

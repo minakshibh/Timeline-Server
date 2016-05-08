@@ -1,7 +1,6 @@
 module AppNotification
   class Service
     def self.tagging_users_push(notification, users, payload)
-      Rails.logger.info '===================I am here service=================================='
       Delayed::Job.enqueue Jobs::NotificationJob.new(notification, users, payload)
     end
 

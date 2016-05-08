@@ -40,18 +40,6 @@ class Timeline < ActiveRecord::Base
     where("timelines.id IN (?)", Block.select(:blockable_id).where(:blockable_type => 'Timeline', :user => current_user))
   end
 
-  # def self.tagging(current_user, tag_users, timeline, comment)
-  #   tagging_user_ids = []
-  #   payload = {}
-  #   tag_users.split(',').each { |tag_user_id| tagging_user_ids.push(tag_user_id) }
-  #   users = User.where(:id => tagging_user_ids)
-  #   users.each { |user| comment.mention!(user) }
-  #   payload.merge!({:timeline_id => timeline.id, :name => timeline.name,:action=>'tagging'})
-  #   # send tagging push notification by parse
-  #   tagging_users_push("@#{current_user.name} mention you in feedeo ##{timeline.name} comment", users, payload)
-  # end
-
-
   protected
 
   def normalize_name

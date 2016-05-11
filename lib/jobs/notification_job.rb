@@ -29,5 +29,13 @@ module Jobs
       users.each { |user| Notification.create(:user_id => user.id, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
     end
 
+    def destroy_failed_jobs?
+      false
+    end
+
+    def queue_name
+      'notifications_alert'
+    end
+
   end
 end

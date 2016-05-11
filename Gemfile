@@ -94,7 +94,7 @@ group :development, :test do
   gem 'bullet'
 
   # Licence check
-  gem 'gem-licenses'
+  # gem 'gem-licenses'
 end
 
 group :production do

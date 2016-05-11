@@ -91,10 +91,10 @@ class Activity < ActiveRecord::Base
       end
 
       if !followers
-        Notification.create(:user_id => user_id, :notification => notification, :payload => payload.to_json)
+        Notification.create(:user_id => user_id,:reportable_id=>self.trackable_id,:reportable_type=>self.trackable_type, :notification => notification, :payload => payload.to_json)
       else
         followers.each do |f|
-          Notification.create(:user_id => f.id, :notification => notification, :payload => payload.to_json)
+          Notification.create(:user_id => f.id,:reportable_id=>self.trackable_id,:reportable_type=>self.trackable_type, :notification => notification, :payload => payload.to_json)
         end
       end
     end

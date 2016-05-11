@@ -3,6 +3,7 @@ class Timeline < ActiveRecord::Base
   include TaggingNotifications
 
   has_many :videos, dependent: :destroy
+  has_many :notifications,:as=>:reportable,:dependent => :destroy
   belongs_to :user
   # added by insonix
   acts_as_commentable

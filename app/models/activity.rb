@@ -100,5 +100,5 @@ class Activity < ActiveRecord::Base
     end
   end
 
-  handle_asynchronously :send_notification, :queue => 'notifications'
+  # handle_asynchronously :send_notification, :queue => 'notifications'
 end

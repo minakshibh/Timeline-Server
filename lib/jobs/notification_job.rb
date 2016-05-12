@@ -1,6 +1,6 @@
 require 'erubis'
 module Jobs
-  class NotificationJob < Struct.new(:notification, :users, :payload)
+  class NotificationJob < Struct.new(:notification, :users, :payload,:reportable)
 
     def perform
       external_id = {'$in' => users.map { |u| u.external_id }.to_a.flatten}
@@ -26,7 +26,15 @@ module Jobs
         # puts response
       end
       # create user notification into db
-      users.each { |user| Notification.create(:user_id => user.id, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
+      users.each { |user| Notification.create(:user_id => user.id,:reportable_id=>reportable.id,:reportable_type=>reportable.class, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
+    end
+
+    def destroy_failed_jobs?
+      false
+    end
+
+    def queue_name
+      'notifications_alert'
     end
 
   end

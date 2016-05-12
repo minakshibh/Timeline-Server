@@ -13,11 +13,11 @@ module TaggingNotifications
         when 'Timeline'
           payload.merge!({:timeline_id => commentable.id, :name => commentable.name, :action => 'tagging'})
           # send tagging push notification by parse
-          AppNotification::Service.tagging_users_push("@#{current_user.name} mention you in feedeo ##{commentable.name} comment", users, payload)
+          AppNotification::Service.tagging_users_push("@#{current_user.name} mention you in feedeo ##{commentable.name} comment", users, payload,commentable)
         when 'Video'
           payload.merge!(:video_id => commentable.id, :timeline_id => commentable.timeline_id, :action => 'tagging')
           # send tagging push notification by parse
-          tagging_users_push("@#{current_user.name} mention you in moment ##{commentable.timeline.name} comment", users, payload)
+          AppNotification::Service.tagging_users_push("@#{current_user.name} mention you in moment ##{commentable.timeline.name} comment", users, payload,commentable)
       end
     end
 
@@ -26,7 +26,7 @@ module TaggingNotifications
       users = User.where(:id => video.timeline.group_timelines.first.participants.push(video.timeline.user.id))
       payload.merge!({:video_id => video.id, :timeline_id => video.timeline_id, :action => 'group_alert'})
       # send moment push notification by parse
-      AppNotification::Service.adding_moment_push("@#{current_user.name} added a moment in feedeo ##{video.timeline.name}", users, payload)
+      AppNotification::Service.adding_moment_push("@#{current_user.name} added a moment in feedeo ##{video.timeline.name}", users, payload,video)
     end
 
   end

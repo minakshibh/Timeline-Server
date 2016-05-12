@@ -8,15 +8,7 @@ class TimelineController < ApplicationController
   # views
 
   def index
-    ##--------------------------------- Initial Code ------------------------------------##
-    # @timelines = Timeline.public_or_own(@current_user).order(updated_at: :desc).limit(25)
-    ##-----------------------------------------------------------------------------------##
-
-    ##----------------------------- Modified Code (By Insonix) --------------------------##
-    Timeline.public_or_own(@current_user).limit(25).each { |timeline| @timelines.push(timeline) }
-    GroupTimeline.includes(:timeline).public_or_own(@current_user).limit(25).each { |group_timeline| @timelines.push(group_timeline.timeline) }
-    @timelines.compact.sort_by! { |record| record.updated_at }.reverse!
-    ##-----------------------------------------------------------------------------------##
+    @timelines = Timeline.public_or_own(@current_user).order(updated_at: :desc).limit(25)
   end
 
   def show
@@ -40,16 +32,8 @@ class TimelineController < ApplicationController
   end
 
   def user
-    ##--------------------------------- Initial Code ------------------------------------##
-    # @timelines = Timeline.public_or_own(@current_user).where(:user_id => params[:user_id])
-    # render :index
-    ##-----------------------------------------------------------------------------------##
-
-    ##----------------------------- Modified Code (By Insonix) --------------------------##
-    Timeline.public_or_own(@current_user).where(:user_id => params[:user_id]).each { |timeline| @timelines.push(timeline) }
-    GroupTimeline.includes(:timeline).public_or_own(@current_user).each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.eql?(params[:user_id].to_s) } }
+    @timelines = Timeline.public_or_own(@current_user).where(:user_id => params[:user_id])
     render :index
-    ##-----------------------------------------------------------------------------------##
   end
 
   def following
@@ -58,17 +42,8 @@ class TimelineController < ApplicationController
   end
 
   def trending
-    ##--------------------------------- Initial Code ------------------------------------##
-    # @timelines = Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: { id: nil }).order(updated_at: :desc, likers_count: :desc, followers_count: :desc).limit(25)
-    # render :index
-    ##-----------------------------------------------------------------------------------##
-
-    ##----------------------------- Modified Code (By Insonix) --------------------------##
-    Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: {id: nil}).limit(25).each { |timeline| @timelines.push(timeline) }
-    GroupTimeline.includes(:timeline).public_or_own(@current_user).each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.eql?(@current_user.id.to_s) } }
-    @timelines.compact.sort_by! { |record| [record.updated_at, record.likers_count, record.followers_count] }.reverse!
+    @timelines = Timeline.public_or_own(@current_user).includes(:videos).where.not(videos: {id: nil}).order(updated_at: :desc, likers_count: :desc, followers_count: :desc).limit(25)
     render :index
-    ##-----------------------------------------------------------------------------------##
   end
 
   def followers
@@ -168,9 +143,8 @@ class TimelineController < ApplicationController
 
   def create
     @timeline = Timeline.new(timeline_params)
-    @timeline.assign_attributes(:user_id=> @current_user.id,:group_timeline=>set_timeline_type(params))
-    # @timeline.user_id = @current_user.id
-    # @timeline.group_timeline = set_timeline_type(params)
+    @timeline.user_id = @current_user.id
+    @timeline.group_timeline = set_timeline_type(params)
     # Modify by insonix
     participants = set_group_timeline_participants(params) if params[:group_timeline].to_s.eql?('1')
     render :json => {:status_code => 404, :message => 'participant list can not be blank'} and return if participants.blank? && params[:group_timeline].to_s.eql?('1')

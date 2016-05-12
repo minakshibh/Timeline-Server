@@ -29,7 +29,7 @@ class Activity < ActiveRecord::Base
         payload = {:timeline_id => self.trackable_id, :name => self.trackable.name, :action => self.action}
       elsif self.action == 'create'
         followers = User.select(:id, :external_id).where(id: Follow.select(:follower_id).where(followable_type: "User", follower_type: "User", followable_id: self.user.id))
-        external_id = { '$in' => followers.map {|u| u.external_id }.to_a.flatten }
+        external_id = {'$in' => followers.map { |u| u.external_id }.to_a.flatten}
         notification = "@#{self.user.name} created feedeo ##{self.trackable.name}."
         payload = {:timeline_id => self.trackable_id, :name => self.trackable.name, :action => self.action}
         user_query = {'$inQuery' => {'where' => {'objectId' => external_id}, 'className' => '_User'}}
@@ -58,9 +58,9 @@ class Activity < ActiveRecord::Base
       end
     elsif self.trackable_type == 'Video'
       followers = User.select(:id, :external_id).where(id: Follow.select(:follower_id).where(followable_type: "Timeline", follower_type: "User", followable_id: self.trackable.timeline.id))
-      external_id = { '$in' => followers.map {|u| u.external_id }.to_a.flatten }
+      external_id = {'$in' => followers.map { |u| u.external_id }.to_a.flatten}
       notification = "@#{self.user.name} added a moment to ##{self.trackable.timeline.name}."
-      payload = {:timeline_id => self.trackable.timeline.id,:video_id => self.trackable_id, :name => self.trackable.timeline.name, :action => self.action}
+      payload = {:timeline_id => self.trackable.timeline.id, :video_id => self.trackable_id, :name => self.trackable.timeline.name, :action => self.action}
       user_query = {'$inQuery' => {'where' => {'objectId' => external_id}, 'className' => '_User'}}
     end
 
@@ -84,20 +84,21 @@ class Activity < ActiveRecord::Base
 
         request.body = pushdata.to_json
         # puts request.body
-        Delayed::Worker.logger.info  "========pushdata=#{pushdata.inspect}=================================================="
+        Delayed::Worker.logger.info "========pushdata=#{pushdata.inspect}=================================================="
         response = h.request request
         Delayed::Worker.logger.info "========push response=#{response.inspect}=============================================="
         # puts response
       end
-
+      Rails.logger.info "======repotable_id=#{self.trackable_id}\n========reportable_type=#{self.trackable_type}"
       if !followers
-        Notification.create(:user_id => user_id,:reportable_id=>self.trackable_id,:reportable_type=>self.trackable_type, :notification => notification, :payload => payload.to_json)
+        Notification.create(:user_id => user_id, :reportable => self.trackable, :notification => notification, :payload => payload.to_json)
       else
         followers.each do |f|
-          Notification.create(:user_id => f.id,:reportable_id=>self.trackable_id,:reportable_type=>self.trackable_type, :notification => notification, :payload => payload.to_json)
+          Notification.create(:user_id => f.id, :reportable => self.trackable, :notification => notification, :payload => payload.to_json)
         end
       end
     end
   end
+
   handle_asynchronously :send_notification, :queue => 'notifications'
 end

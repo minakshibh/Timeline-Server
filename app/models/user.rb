@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_many :timelines, dependent: :destroy
   has_many :activities
   has_many :blocks
-  has_many :notifications,:as=>:reportable,:dependent => :destroy
+  has_many :notifications,:dependent=>:destroy
   has_many :comments
   scope :notifications_before_current_timestamp, -> (user, time_stamp) { user.notifications.where('created_at < ?', time_stamp) }
   acts_as_liker

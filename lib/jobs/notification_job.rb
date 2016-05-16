@@ -4,6 +4,8 @@ module Jobs
 
     def enqueue(job)
       job.save!
+      Rails.logger.info "notifications=#{notification}\n===users=#{users}===\n payload=#{payload}=\n==reportable=#{reportable}"
+      Rails.logger.info "======Job=#{job}==Enqueue=="
     end
 
     def perform
@@ -31,6 +33,14 @@ module Jobs
       end
       # create user notification into db
       users.each { |user| Notification.create(:user_id => user.id,:reportable_id=>reportable.id,:reportable_type=>reportable.class, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
+    end
+
+    def success(job)
+      Rails.logger.info "======Job=#{job}==success=="
+    end
+
+    def error(job,exception)
+      Rails.logger.info "======Job=#{job}==error#{exception.message}=="
     end
 
     def destroy_failed_jobs?

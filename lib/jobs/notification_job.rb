@@ -32,7 +32,7 @@ module Jobs
         # puts response
       end
       # create user notification into db
-      users.each { |user| Notification.create(:user_id => user.id,:reportable_id=>reportable.id,:reportable_type=>reportable.class, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
+      users.each { |user| Notification.create(:user_id => user.id,:reportable=>reportable, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
     end
 
     def success(job)
@@ -45,10 +45,6 @@ module Jobs
 
     def destroy_failed_jobs?
       false
-    end
-
-    def queue_name
-      'notifications_alert'
     end
 
     def max_attempts

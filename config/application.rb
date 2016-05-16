@@ -50,7 +50,7 @@ module TimelineServer
     end
 
     Backburner.configure do |config|
-      config.beanstalk_url       = ["beanstalk://54.173.66.114",".."]
+      config.beanstalk_url       = ["beanstalk://127.0.0.1","beanstalk://54.173.66.114"]
       config.tube_namespace      = "Timeline.app.production"
       config.namespace_separator = "."
       config.on_error            = lambda { |e| puts e }

@@ -33,8 +33,12 @@ module Jobs
       false
     end
 
-    def queue_name
-      'notifications_alert'
+    # def queue_name
+    #   'notifications_alert'
+    # end
+
+    def max_attempts
+      5
     end
 
   end

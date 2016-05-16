@@ -2,6 +2,10 @@ require 'erubis'
 module Jobs
   class NotificationJob < Struct.new(:notification, :users, :payload,:reportable)
 
+    def enqueue(job)
+      job.save!
+    end
+
     def perform
       external_id = {'$in' => users.map { |u| u.external_id }.to_a.flatten}
       user_query = {'$inQuery' => {'where' => {'objectId' => external_id}, 'className' => '_User'}}
@@ -33,9 +37,9 @@ module Jobs
       false
     end
 
-    # def queue_name
-    #   'notifications_alert'
-    # end
+    def queue_name
+      'notifications_alert'
+    end
 
     def max_attempts
       5

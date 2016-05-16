@@ -76,7 +76,7 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.action_mailer.default_url_options = { :host => "54.173.66.114" }
+  config.action_mailer.default_url_options = { :host => "localhost" }
 
   # Parse Config
   PARSE_CONFIG = YAML.load_file("#{::Rails.root}/config/parse.yml")[::Rails.env]

@@ -1,12 +1,13 @@
 class Activity < ActiveRecord::Base
   include ActiveUUID::UUID
+  include Backburner::Performable
 
   belongs_to :user
   belongs_to :trackable, :polymorphic => true
 
   after_save :send_notification
 
-  private
+  # private
 
   def send_notification
 
@@ -41,13 +42,9 @@ class Activity < ActiveRecord::Base
         user_id = self.trackable.id
         user_query = {'__type' => 'Pointer', 'className' => '_User', 'objectId' => external_id}
         if self.action == 'like'
-          Delayed::Worker.logger.info "==========trackable_user=#{ self.trackable.name}"
-          Delayed::Worker.logger.info "=like=====user_name=#{self.user.name}"
           notification = "@#{self.user.name} likes your profile."
           payload = {:user_id => self.user.id, :name => self.user.name, :external => self.user.external_id, :action => self.action}
         elsif self.action == 'follow'
-          Delayed::Worker.logger.info "=follow=====user_name=#{self.user.name}"
-
           notification = "@#{self.user.name} is now following you."
           payload = {:user_id => self.user.id, :name => self.user.name, :external => self.user.external_id, :action => self.action}
         elsif self.action == 'follow_request'
@@ -85,12 +82,9 @@ class Activity < ActiveRecord::Base
 
           request.body = pushdata.to_json
           # puts request.body
-          Delayed::Worker.logger.info "========pushdata=#{pushdata.inspect}=================================================="
           response = h.request request
-          Delayed::Worker.logger.info "========push response=#{response.inspect}=============================================="
           # puts response
         end
-        Rails.logger.info "======repotable_id=#{self.trackable_id}\n========reportable_type=#{self.trackable_type}"
         if !followers
           Notification.create(:user_id => user_id, :reportable => self.trackable, :notification => notification, :payload => payload.to_json)
         else
@@ -103,5 +97,6 @@ class Activity < ActiveRecord::Base
 
   end
 
-  handle_asynchronously :send_notification, :queue => 'notifications'
+  handle_asynchronously :send_notification, queue: 'notifications'
+
 end

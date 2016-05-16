@@ -33,6 +33,7 @@ gem 'activeuuid'
 
 # Backburner
 gem 'backburner'
+gem 'beanstalkd_view'
 
 # AWS Gems
 gem 'aws-sdk-v1'

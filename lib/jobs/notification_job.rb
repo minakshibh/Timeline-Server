@@ -32,7 +32,7 @@ module Jobs
         # puts response
       end
       # create user notification into db
-      users.each { |user| Notification.create(:user_id => user.id,:reportable=>reportable, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
+      users.each { |user| Notification.create(:user_id => user.id,:reportable_id=>'123',:reportable_type=>'test', :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
     end
 
     def success(job)

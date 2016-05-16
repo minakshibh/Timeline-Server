@@ -7,9 +7,13 @@ class Activity < ActiveRecord::Base
 
   after_save :send_notification
 
+  def send_notification
+    Activity.delay.send_update
+  end
+
   # private
 
-  def send_notification
+  def self.send_update
 
     notification = nil
 
@@ -97,6 +101,8 @@ class Activity < ActiveRecord::Base
 
   end
 
-  handle_asynchronously :send_notification, queue: 'notifications'
+
+
+  # handle_asynchronously :send_notification, queue: 'notifications'
 
 end

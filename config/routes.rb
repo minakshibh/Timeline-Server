@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount DelayedJobWeb => "/delayed_job"
-  mount BeanstalkdView::Server, :at => "/beanstalkd"
+  require 'sidekiq/web'
+  mount Sidekiq::Web, at: '/sidekiq'
   scope '/api' do
     scope '/user' do
       #--------------------- created by insonix --------------------------#

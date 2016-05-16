@@ -67,6 +67,11 @@ gem 'delayed_paperclip'
 # delayed job web interface
 gem 'delayed_job_web', '~> 1.2', '>= 1.2.10'
 
+#sidekiq background job
+gem 'sidekiq'
+gem 'sinatra', require: false
+gem 'slim'
+
 # handle delayed_job restart
 gem 'whenever', require: false
 

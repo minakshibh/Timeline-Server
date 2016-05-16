@@ -233,6 +233,7 @@ DEPENDENCIES
   beanstalkd_view
   bullet
   daemons
+  dante
   delayed_job_active_record
   delayed_job_web (~> 1.2, >= 1.2.10)
   delayed_paperclip

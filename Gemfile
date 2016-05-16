@@ -98,6 +98,8 @@ group :development, :test do
   # gem 'gem-licenses'
 end
 
+gem "dante"
+
 group :production do
   # gem 'pg'
 end

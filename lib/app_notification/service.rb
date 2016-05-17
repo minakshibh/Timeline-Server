@@ -1,16 +1,15 @@
 module AppNotification
   class Service
-    def self.tagging_users_push(notification, users, payload, reportable)
-      external_id = {'$in' => users.map { |u| u.external_id }.to_a.flatten}
-      TaggingAlertWorker.perform_async(notification,external_id,payload)
+    def self.tagging_users_push(notification, users, payload, reportable_id,reportable_type)
+      users = users.map{|user| user.id}
+      users = users.push(reportable_id,reportable_type)
+      TaggingAlertWorker.perform_async(notification,payload,users)
       # Backburner.enqueue Jobs::NotificationJob, notification, external_id, payload
-      # create user notification into db
-      users.each { |user| Notification.create(:user_id => user.id, :reportable => reportable, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
     end
 
-    def self.adding_moment_push(notification, users, payload, reportable)
-      external_id = {'$in' => users.map { |u| u.external_id }.to_a.flatten}
-      Backburner.enqueue Jobs::NotificationJob, notification, external_id, payload
+    def self.adding_moment_push(notification, users, payload, reportable_id,reportable_type)
+      users = users.map{|user| user.id}
+      TaggingAlertWorker.perform_async(notification,payload,users,reportable_id,reportable_type)
     end
   end
 end

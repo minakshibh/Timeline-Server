@@ -3,7 +3,11 @@ class TaggingAlertWorker
   sidekiq_options queue: 'high'
   # sidekiq_options retry: false
 
-  def perform(notification,external_id,payload)
+  def perform(notification,payload,users)
+    reportable_type = users.pop()
+    reportable_id = users.pop()
+    users = User.where(:id=>users)
+    external_id = {'$in' => users.map { |u| u.external_id }.to_a.flatten}
     user_query = {'$inQuery' => {'where' => {'objectId' => external_id}, 'className' => '_User'}}
     push_data = {:where => {:user => user_query},
                  :data => {:alert => notification, :badge => 'Increment', :sound => 'default', 'content-available' => 1, :payload => payload}}
@@ -24,5 +28,14 @@ class TaggingAlertWorker
       response = h.request request
       # puts response
     end
+
+    case reportable_type
+      when 'Timeline'
+        reportable = Timeline.find_by_id(reportable_id)
+      when 'video'
+        reportable = Video.find_by_id(reportable_id)
+    end
+    # create user notification into db
+    users.each { |user| Notification.create(:user_id => user.id, :reportable => reportable, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
   end
 end

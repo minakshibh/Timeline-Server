@@ -7,7 +7,7 @@
 # Set timeout to 8 on Heroku, longer if you manage your own systems.
 :timeout: 30
 :queues:
-  - [paperclip,4]
+  - [paperclip, 4]
   - [high, 3]
   - [default, 2]
   - [low, 1]

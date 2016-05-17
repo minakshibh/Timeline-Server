@@ -11,7 +11,7 @@ class VideoController < ApplicationController
     if @video.save
       Video.group_alert(@current_user, @video) if @video.timeline.group_timeline
       track_activity @video
-      render :json => @video, :status => 200 and return
+      render :json => @video, :status => 200
     else
       render :json => {:error => @video.errors.full_messages}, :status => 400
     end

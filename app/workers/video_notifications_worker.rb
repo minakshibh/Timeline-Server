@@ -1,11 +1,12 @@
-class VideoNotificationWorker
+class VideoNotificationsWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'high'
-  sidekiq_options retry: false
-  sidekiq_options unique: :until_and_while_executing
+  sidekiq_options retry: true
+  # sidekiq_options unique: :until_and_while_executing
 
   def perform(activity_id)
     activity = Activity.find_by_id(activity_id)
+    user_id = activity.trackable.timeline.user.id
     followers = User.select(:id, :external_id).where(id: Follow.select(:follower_id).where(followable_type: "Timeline", follower_type: "User", followable_id: activity.trackable.timeline.id))
     external_id = {'$in' => followers.map { |u| u.external_id }.to_a.flatten}
     notification = "@#{activity.user.name} added a moment to ##{activity.trackable.timeline.name}."
@@ -37,7 +38,8 @@ class VideoNotificationWorker
         response = h.request request
         # puts response
       end
-      if !followers
+      if followers.blank?
+
         Notification.create(:user_id => user_id, :reportable => activity.trackable, :notification => notification, :payload => payload.to_json)
       else
         followers.each do |f|

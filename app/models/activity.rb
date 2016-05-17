@@ -8,13 +8,13 @@ class Activity < ActiveRecord::Base
 
   def send_notification
     if self.trackable.present?
-      puts "====self=#{self.id}=====trackable=#{self.trackable}"
       if self.trackable_type == 'Timeline'
         TimelineNotificationsWorker.perform_async(self.id)
       elsif self.trackable_type == 'User'
         UserNotificationsWorker.perform_async(self.id)
       elsif self.trackable_type == 'Video'
-        VideoNotificationWorker.perform_async(self.id)
+        puts "====self=#{self.id}=====trackable=#{self.trackable}"
+        VideoNotificationsWorker.perform_async(self.id)
       end
     end
   end

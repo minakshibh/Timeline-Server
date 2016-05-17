@@ -7,6 +7,7 @@ development:
   database: ebdb
   username: root
   password: root
+  pool: 5
   host: localhost
   #  socket: /Applications/MAMP/tmp/mysql/mysql.sock
   port: 8889
@@ -35,4 +36,5 @@ production:
   username: <%= ENV['RDS_USERNAME'] %>
   password: <%= ENV['RDS_PASSWORD'] %>
   host: <%= ENV['RDS_HOSTNAME'] %>
+  pool: 5
   port: <%= ENV['RDS_PORT'] %>

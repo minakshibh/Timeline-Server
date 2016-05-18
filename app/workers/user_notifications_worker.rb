@@ -48,7 +48,7 @@ class UserNotificationsWorker
         response = h.request request
         # puts response
       end
-      if !followers
+      if followers.blank?
         Notification.create(:user_id => user_id, :reportable => activity.trackable, :notification => notification, :payload => payload.to_json)
       else
         followers.each do |f|

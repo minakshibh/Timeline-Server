@@ -28,11 +28,6 @@ json.array! @timelines do |timeline|
       user = user.present? ? user : nil
       group_participant.push(user.as_json.merge!(:isAdmin => participant.to_s.eql?(group_timeline.user_id.to_s))) unless user.nil?
 
-      # if participant.to_s.eql?(group_timeline.user_id.to_s) then
-      #   group_participant.push(user.as_json.merge!(:isAdmin => true)) unless user.nil?
-      # else
-      #   group_participant.push(user.as_json.merge!(:isAdmin => false)) unless user.nil?
-      # end
     end
 
     json.user_id @current_user.id

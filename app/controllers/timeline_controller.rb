@@ -24,10 +24,8 @@ class TimelineController < ApplicationController
     ##-----------------------------------------------------------------------------------##
 
     ##----------------------------- Modified Code (By Insonix) --------------------------##
-    @timelines = Timeline.where(:user_id => @current_user.id)
-    GroupTimeline.includes(:timeline).where('participants LIKE ?',"%#{@current_user.id.to_s}%").each{|group_timeline| @timelines.push(group_timeline.timeline) }
-
-    # GroupTimeline.includes(:timeline).all.each { |record| record.participants.each { |participant| @timelines.push(record.timeline) if participant.to_s.eql?(@current_user.id.to_s) } }
+    @timelines = Timeline.where(:user_id => @current_user.id).order(updated_at: :desc)
+    GroupTimeline.includes(:timeline).where('participants LIKE ?', "%#{@current_user.id.to_s}%").each { |group_timeline| @timelines.push(group_timeline.timeline) }
     @timelines.compact.sort_by! { |record| record.updated_at }.reverse!
     render :index
     ##-----------------------------------------------------------------------------------##

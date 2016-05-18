@@ -40,10 +40,10 @@ class VideoNotificationsWorker
       end
       if followers.blank?
 
-        Notification.create(:user_id => user_id, :reportable => activity.trackable, :notification => notification, :payload => payload.to_json)
+        Notification.create(:user_id => user_id, :reportable => activity.trackable.timeline,:next_reportable=>activity.trackable, :notification => notification, :payload => payload.to_json)
       else
         followers.each do |f|
-          Notification.create(:user_id => f.id, :reportable => activity.trackable, :notification => notification, :payload => payload.to_json)
+          Notification.create(:user_id => f.id,:reportable => activity.trackable.timeline,:next_reportable=>activity.trackable, :notification => notification, :payload => payload.to_json)
         end
       end
     end

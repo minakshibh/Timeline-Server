@@ -1,13 +1,14 @@
 class TaggingAlertWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'high'
-  sidekiq_options retry: false
-  sidekiq_options unique: :until_and_while_executing
+  # sidekiq_options retry: false
+  # sidekiq_options unique: :until_and_while_executing
 
 
   def perform(notification, payload, users)
     reportable_type = users.pop()
     reportable_id = users.pop()
+
     users = User.where(:id => users)
     external_id = {'$in' => users.map { |u| u.external_id }.to_a.flatten}
     user_query = {'$inQuery' => {'where' => {'objectId' => external_id}, 'className' => '_User'}}
@@ -33,14 +34,17 @@ class TaggingAlertWorker
         # puts response
       end
 
-      case reportable_type
+      case reportable_type.to_s
         when 'Timeline'
           reportable = Timeline.find_by_id(reportable_id)
-        when 'video'
+        when 'Video'
           reportable = Video.find_by_id(reportable_id)
       end
+      # find reportable and next_reportable
+      reportable, next_reportable = AppNotification::Service.find_reportable_and_next_reportable(reportable)
+
       # create user notification into db
-      users.each { |user| Notification.create(:user_id => user.id, :reportable => reportable, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
+      users.each { |user| Notification.create(:user_id => user.id, :reportable => reportable, :next_reportable => next_reportable, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }
     end
 
   end

@@ -10,16 +10,16 @@ module AppNotification
       TaggingAlertWorker.perform_async(notification, payload, users)
     end
 
-    def self.find_reportable_and_next_reportable(reportable)
-
-      if reportable.class.to_s.eql?('Timeline')
-        reportable = reportable
-        next_reportable = nil
-      else
-        next_reportable = reportable
-        reportable = reportable.timeline
-      end
-      return reportable, next_reportable
-    end
+    # def self.find_reportable_and_next_reportable(reportable)
+    #
+    #   if reportable.class.to_s.eql?('Timeline')
+    #     reportable = reportable
+    #     next_reportable = nil
+    #   else
+    #     next_reportable = reportable
+    #     reportable = reportable.timeline
+    #   end
+    #   return reportable, next_reportable
+    # end
   end
 end

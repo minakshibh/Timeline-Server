@@ -41,7 +41,16 @@ class TaggingAlertWorker
           reportable = Video.find_by_id(reportable_id)
       end
       # find reportable and next_reportable
-      reportable, next_reportable = AppNotification::Service.find_reportable_and_next_reportable(reportable)
+
+      if reportable.class.to_s.eql?('Timeline')
+        reportable = reportable
+        next_reportable = nil
+      else
+        next_reportable = reportable
+        reportable = reportable.timeline
+      end
+
+      # reportable, next_reportable = AppNotification::Service.find_reportable_and_next_reportable(reportable)
 
       # create user notification into db
       users.each { |user| Notification.create(:user_id => user.id, :reportable => reportable, :next_reportable => next_reportable, :notification => notification, :payload => payload.merge!(:user_id => user.id).to_json) }

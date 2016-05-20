@@ -143,11 +143,9 @@ class TimelineController < ApplicationController
 
   def create
     @timeline = Timeline.new(timeline_params)
-    @timeline.user_id = @current_user.id
-    @timeline.group_timeline = set_timeline_type(params)
+    @timeline.assign_attributes(:user_id => @current_user.id, :group_timeline => set_timeline_type(params))
     # Modify by insonix
     participants = set_group_timeline_participants(params) if params[:group_timeline].to_s.eql?('1')
-    render :json => {:status_code => 404, :message => 'participant list can not be blank'} and return if participants.blank? && params[:group_timeline].to_s.eql?('1')
     if @timeline.save
       track_activity @timeline
       @timeline.group_timelines.create(:participants => participants, :user_id => @current_user.id, :user_name => @current_user.name) if params[:group_timeline].to_s.eql?('1')
@@ -194,7 +192,7 @@ class TimelineController < ApplicationController
   private
 
   def timeline_params
-    params.permit(:name, :group_timeline, :description)
+    params.permit(:name, :group_timeline, :description, :participants)
   end
 
   def set_timeline

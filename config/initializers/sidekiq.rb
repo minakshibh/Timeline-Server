@@ -1,5 +1,5 @@
 if Rails.env.production?
-  redis_url = 'redis://dev.rodeo.clicklabs.in:6379/12'
+  redis_url = 'redis://54.191.59.21:6379/12'
 else
   redis_url = 'redis://localhost:6379/12'
 end

@@ -73,6 +73,9 @@ gem 'sinatra', require: false
 gem 'slim'
 gem 'sidekiq-failures'
 gem 'sidekiq-unique-jobs'
+gem 'hiredis'
+gem 'redis', :require => ["redis", "redis/connection/hiredis"]
+gem 'redis-namespace'
 gem 'celluloid', '~> 0.16.0', require: false
 
 

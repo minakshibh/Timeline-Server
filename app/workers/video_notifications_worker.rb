@@ -2,7 +2,7 @@ class VideoNotificationsWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'high'
   sidekiq_options retry: true
-  # sidekiq_options unique: :until_and_while_executing
+  sidekiq_options unique: :until_and_while_executing
 
   def perform(*args)
     activity_id = args[0]

@@ -8,7 +8,7 @@
 :timeout: 30
 :queues:
   - [paperclip, 3]
-  - [high, 4]
+  - [high, 5]
   - [default, 2]
   - [low, 1]
 

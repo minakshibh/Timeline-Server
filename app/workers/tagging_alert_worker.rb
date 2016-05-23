@@ -2,7 +2,6 @@ class TaggingAlertWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'high'
   # sidekiq_options retry: false
-  # sidekiq_options unique: :until_and_while_executing
 
 
   def perform(notification, payload, users)

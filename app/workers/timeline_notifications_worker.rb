@@ -2,7 +2,6 @@ class TimelineNotificationsWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'high'
   sidekiq_options retry: false
-  sidekiq_options unique: :until_and_while_executing
 
   def perform(activity_id)
     notification = nil

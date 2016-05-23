@@ -1,7 +1,8 @@
 class UserNotificationsWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'high'
-  sidekiq_options retry: true
+  sidekiq_options retry: false
+  sidekiq_options unique: :until_and_while_executing
 
   def perform(activity_id)
     activity = Activity.find_by_id(activity_id)

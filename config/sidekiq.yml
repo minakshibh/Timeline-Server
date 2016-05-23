@@ -12,15 +12,15 @@
   - [default, 2]
   - [low, 1]
 #
-#production:
-#  :concurrency: 5
-#  :pidfile: /home/deploy/apps/Timeline/tmp/pids/sidekiq.pid
-#  :logfile: /home/deploy/apps/Timeline/log/sidekiq.log
-
 production:
   :concurrency: 5
-  :pidfile: /home/insonix/RubymineProjects/Timeline/tmp/pids/sidekiq.pid
-  :logfile: /home/insonix/RubymineProjects/Timeline/log/sidekiq.log
+  :pidfile: /home/deploy/apps/Timeline/tmp/pids/sidekiq.pid
+  :logfile: /home/deploy/apps/Timeline/log/sidekiq.log
+
+#production:
+#  :concurrency: 5
+#  :pidfile: /home/insonix/RubymineProjects/Timeline/tmp/pids/sidekiq.pid
+#  :logfile: /home/insonix/RubymineProjects/Timeline/log/sidekiq.log
 
 
 development:

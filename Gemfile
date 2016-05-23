@@ -40,7 +40,7 @@ gem 'aws-sdk-v1'
 gem 'aws-sdk', '~> 2'
 
 # Redis
-gem 'redis'
+# gem 'redis'
 
 
 

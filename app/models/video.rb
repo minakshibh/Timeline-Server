@@ -3,7 +3,7 @@ class Video < ActiveRecord::Base
   include TaggingNotifications
 
   # added by insonix
-  has_many :notifications,:as=>:reportable,:dependent => :destroy
+  has_many :video_notifications,:as=>:next_reportable,:dependent => :destroy,:class_name=>'Notification'
   acts_as_commentable
   belongs_to :timeline
 

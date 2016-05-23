@@ -1,3 +1,4 @@
 #!/bin/sh
 sudo /etc/init.d/nginx restart
+sudo /etc/init.d/monit restart
 echo "restarting Passenger app"

@@ -26,7 +26,7 @@ module TaggingNotifications
       users = User.where(:id => video.timeline.group_timelines.first.participants.push(video.timeline.user.id))
       payload.merge!({:video_id => video.id, :timeline_id => video.timeline_id, :action => 'group_alert'})
       # send moment push notification by parse
-      AppNotification::Service.adding_moment_push("@#{current_user.name} added a moment in feedeo ##{video.timeline.name}", users, payload,video)
+      AppNotification::Service.adding_moment_push("@#{current_user.name} added a moment in feedeo ##{video.timeline.name}", users, payload,video.id,video.class)
     end
 
   end

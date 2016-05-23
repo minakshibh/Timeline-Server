@@ -3,14 +3,16 @@ class Timeline < ActiveRecord::Base
   include TaggingNotifications
 
   has_many :videos, dependent: :destroy
-  has_many :notifications,:as=>:reportable,:dependent => :destroy
+  has_many :timeline_notifications,:as=>:reportable,:dependent => :destroy,:class_name=>'Notification'
   belongs_to :user
   # added by insonix
   acts_as_commentable
   has_many :group_timelines, dependent: :destroy
-
+  attr_accessor :participants
   before_validation :normalize_name
   validates_presence_of :user_id, :name
+  # validate group timeline participants
+  validates_presence_of :participants,:if=> :is_group_timeline?
   validate :timeline_limit_reached, :dublicate_name, on: :create
 
   acts_as_likeable
@@ -45,6 +47,10 @@ class Timeline < ActiveRecord::Base
 
   def normalize_name
     self.name = self.name.gsub(/^[#]*/, '')
+  end
+
+  def is_group_timeline?
+    self.group_timeline
   end
 
   def timeline_limit_reached

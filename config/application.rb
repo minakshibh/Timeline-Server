@@ -35,11 +35,9 @@ module TimelineServer
     config.active_record.raise_in_transactional_callbacks = true
 
     # Delayed Job
-    config.active_job.queue_adapter = :delayed_job
+    config.active_job.queue_adapter = :sidekiq
 
     # Allow loading modules from /lib/ directory
-    # config.autoload_paths << Rails.root.join('lib')
-    # config.autoload_paths += %W(#{config.root}/lib)
     config.eager_load_paths += %W(#{config.root}/lib)
 
     config.middleware.insert_before 0, "Rack::Cors" do

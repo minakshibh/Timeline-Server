@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160511093110) do
+ActiveRecord::Schema.define(version: 20160518055855) do
 
   create_table "activities", force: :cascade do |t|
     t.string   "action",         limit: 255
@@ -124,13 +124,15 @@ ActiveRecord::Schema.define(version: 20160511093110) do
   add_index "mentions", ["mentioner_id", "mentioner_type"], name: "fk_mentions", using: :btree
 
   create_table "notifications", force: :cascade do |t|
-    t.uuid     "user_id",         limit: 16
-    t.string   "notification",    limit: 255
-    t.text     "payload",         limit: 65535
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
-    t.uuid     "reportable_id",   limit: 16
-    t.string   "reportable_type", limit: 255
+    t.uuid     "user_id",              limit: 16
+    t.string   "notification",         limit: 255
+    t.text     "payload",              limit: 65535
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.uuid     "reportable_id",        limit: 16
+    t.string   "reportable_type",      limit: 255
+    t.uuid     "next_reportable_id",   limit: 16
+    t.string   "next_reportable_type", limit: 255
   end
 
   add_index "notifications", ["user_id"], name: "user_notifications", using: :btree

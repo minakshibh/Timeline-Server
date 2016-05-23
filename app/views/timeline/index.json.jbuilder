@@ -23,14 +23,13 @@ json.array! @timelines do |timeline|
   if timeline.group_timeline.present?
     group_participant = []
     group_timeline = GroupTimeline.find_by_timeline_id(timeline.id)
-    group_timeline.participants.push(group_timeline.user_id).each_with_index do |participant, index|
-      puts "==index=#{index}==particip[ant=#{participant}\n=="
-      participant.to_s.eql?(group_timeline.user_id.to_s) ?
-          group_participant.push(User.find_by_id(participant).as_json.merge!(:isAdmin => true)) :
-          group_participant.push(User.find_by_id(participant).as_json.merge!(:isAdmin => false))
+    group_timeline.participants.push(group_timeline.user_id).each do |participant|
+      user = User.find_by_id(participant)
+      user = user.present? ? user : nil
+      group_participant.push(user.as_json.merge!(:isAdmin => participant.to_s.eql?(group_timeline.user_id.to_s))) unless user.nil?
+
     end
 
-    puts "====participants=#{group_participant}"
     json.user_id @current_user.id
     json.admin_id group_timeline.user_id
     json.admin_name group_timeline.user_name

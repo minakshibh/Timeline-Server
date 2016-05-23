@@ -69,6 +69,8 @@ GEM
     bullet (5.0.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.9.0)
+    celluloid (0.16.0)
+      timers (~> 4.0.0)
     chronic (0.10.2)
     climate_control (0.0.3)
       activesupport (>= 3.0)
@@ -100,6 +102,7 @@ GEM
       activesupport (>= 4.1.0)
     health_check (1.5.1)
       rails (>= 2.3.0)
+    hitimes (1.2.4)
     i18n (0.7.0)
     jbuilder (2.4.1)
       activesupport (>= 3.0.0, < 5.1)
@@ -185,6 +188,11 @@ GEM
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
       redis (~> 3.2, >= 3.2.1)
+    sidekiq-failures (0.4.5)
+      sidekiq (>= 2.16.0)
+    sidekiq-unique-jobs (4.0.17)
+      sidekiq (>= 2.6)
+      thor
     sinatra (1.4.7)
       rack (~> 1.5)
       rack-protection (~> 1.4)
@@ -213,6 +221,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.2)
+    timers (4.0.4)
+      hitimes
     tzinfo (1.2.2)
       thread_safe (~> 0.1)
     uglifier (3.0.0)
@@ -241,6 +251,7 @@ DEPENDENCIES
   backburner
   beanstalkd_view
   bullet
+  celluloid (~> 0.16.0)
   daemons
   dante
   delayed_job_active_record
@@ -260,6 +271,8 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   sidekiq
+  sidekiq-failures
+  sidekiq-unique-jobs
   sinatra
   slim
   socialization

@@ -71,6 +71,10 @@ gem 'delayed_job_web', '~> 1.2', '>= 1.2.10'
 gem 'sidekiq'
 gem 'sinatra', require: false
 gem 'slim'
+gem 'sidekiq-failures'
+gem 'sidekiq-unique-jobs'
+gem 'celluloid', '~> 0.16.0', require: false
+
 
 # handle delayed_job restart
 gem 'whenever', require: false

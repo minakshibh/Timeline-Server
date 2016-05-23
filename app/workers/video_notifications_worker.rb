@@ -4,7 +4,8 @@ class VideoNotificationsWorker
   sidekiq_options retry: true
   # sidekiq_options unique: :until_and_while_executing
 
-  def perform(activity_id)
+  def perform(*args)
+    activity_id = args[0]
     puts "=======activity_id=#{activity_id}===\n"
     activity = Activity.find_by_id(activity_id)
     user_id = activity.trackable.timeline.user.id

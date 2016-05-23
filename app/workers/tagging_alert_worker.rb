@@ -1,7 +1,7 @@
 class TaggingAlertWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'high'
-  # sidekiq_options retry: false
+  sidekiq_options retry: true
 
 
   def perform(notification, payload, users)

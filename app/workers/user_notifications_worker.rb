@@ -1,7 +1,7 @@
 class UserNotificationsWorker
   include Sidekiq::Worker
   sidekiq_options queue: 'high'
-  # sidekiq_options retry: false
+  sidekiq_options retry: true
 
   def perform(activity_id)
     activity = Activity.find_by_id(activity_id)

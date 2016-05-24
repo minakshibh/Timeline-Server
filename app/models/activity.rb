@@ -15,7 +15,6 @@ class Activity < ActiveRecord::Base
       elsif self.trackable_type == 'User'
         UserNotificationsWorker.perform_async(self.id)
       elsif self.trackable_type == 'Video'
-        puts "====self=#{self.id}=====trackable=#{self.trackable}"
         VideoNotificationsWorker.perform_async(self.id)
       end
     end

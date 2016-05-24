@@ -4,7 +4,9 @@ class Activity < ActiveRecord::Base
   belongs_to :user
   belongs_to :trackable, :polymorphic => true
 
-  after_save :send_notification
+  after_commit :send_notification, :on => :create
+
+  # after_save :send_notification
 
   def send_notification
     if self.trackable.present?

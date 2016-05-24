@@ -7,7 +7,6 @@ class TimelineNotificationsWorker
   def perform(activity_id)
     notification = nil
     activity = Activity.find_by(:id=>activity_id)
-    puts "activity=#{activity}\ntrackable=#{activity.trackable}"
     external_id = activity.trackable.user.external_id
     user_id = activity.trackable.user.id
     user_query = {'__type' => 'Pointer', 'className' => '_User', 'objectId' => external_id}

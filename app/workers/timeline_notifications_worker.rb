@@ -49,16 +49,19 @@ class TimelineNotificationsWorker
 
         request.body = pushdata.to_json
         # puts request.body
-        response = h.request request
+        case activity.action.to_s
+          when 'create'
+            if followers.present?
+              h.request request
+              followers.each { |f| Notification.create(:user_id => f.id, :reportable => activity.trackable, :notification => notification, :payload => payload.to_json) }
+            end
+          else
+            h.request request
+            Notification.create(:user_id => user_id, :reportable => activity.trackable, :notification => notification, :payload => payload.to_json)
+        end
         # puts response
       end
-      if followers.blank?
-        Notification.create(:user_id => user_id, :reportable => activity.trackable, :notification => notification, :payload => payload.to_json)
-      else
-        followers.each do |f|
-          Notification.create(:user_id => f.id, :reportable => activity.trackable, :notification => notification, :payload => payload.to_json)
-        end
-      end
+      
     end
 
   end
